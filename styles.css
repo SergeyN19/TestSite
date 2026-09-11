@@ -1,10 +1,14 @@
 :root {
   --bg: #f5f7fb;
   --text: #1c2433;
-  --primary: #2058ff;
-  --primary-dark: #153eb8;
+  --primary: #2f9e44;
+  --primary-dark: #237a34;
   --card: #ffffff;
-  --accent: #ecf1ff;
+  --accent: #eaf8ee;
+  --hero-start: #0f3d1d;
+  --hero-end: #2f9e44;
+  --outline: rgba(47, 158, 68, 0.25);
+  --price-box-bg: #237a34;
 }
 
 * {
@@ -26,7 +30,7 @@ body {
 
 .hero {
   color: #fff;
-  background: linear-gradient(120deg, #0d1f55 0%, #2058ff 100%);
+  background: linear-gradient(120deg, var(--hero-start) 0%, var(--hero-end) 100%);
   padding: 5rem 0;
 }
 
@@ -86,7 +90,7 @@ h1 {
 }
 
 .price-box {
-  background: #1a45c8;
+  background: var(--price-box-bg);
   color: #fff;
   border-radius: 1rem;
   padding: 1.5rem;
@@ -136,7 +140,7 @@ h1 {
 
 .lead-form input:focus,
 .lead-form textarea:focus {
-  outline: 2px solid rgba(32, 88, 255, 0.25);
+  outline: 2px solid var(--outline);
   border-color: var(--primary);
 }
 

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Разуманя изба — система умного дома</title>
+  <meta name="description" content="Умный дом «Разуманя изба»: безопасность, комфорт и экономия энергии в одном решении. Оставьте заявку на бесплатную консультацию.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container hero__content">
+      <p class="hero__badge">Российская система умного дома</p>
+      <h1>Разуманя изба</h1>
+      <p class="hero__subtitle">
+        Управляйте светом, климатом, безопасностью и техникой из одного приложения.
+      </p>
+      <a class="button button--primary" href="#lead-form">Получить консультацию</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Почему выбирают «Разуманю избу»</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Безопасность 24/7</h3>
+            <p>Датчики движения, дыма и протечек мгновенно сообщают о рисках.</p>
+          </article>
+          <article class="card">
+            <h3>Экономия до 30%</h3>
+            <p>Автоматические сценарии снижают расход электроэнергии и отопления.</p>
+          </article>
+          <article class="card">
+            <h3>Управление в 1 клик</h3>
+            <p>Сцены «Утро», «Отъезд», «Ночь» запускаются одним касанием.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--accent">
+      <div class="container offer">
+        <div>
+          <h2>Готовое решение под ваш дом</h2>
+          <p>Подберем комплект оборудования и рассчитаем стоимость под вашу площадь и задачи.</p>
+          <ul>
+            <li>Бесплатный аудит потребностей</li>
+            <li>Установка и настройка «под ключ»</li>
+            <li>Поддержка после монтажа</li>
+          </ul>
+        </div>
+        <div class="price-box">
+          <p class="price-box__label">Базовый комплект</p>
+          <p class="price-box__price">от 49 900 ₽</p>
+          <p class="price-box__note">Монтаж и запуск за 1 день</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lead-form">
+      <div class="container form-wrap">
+        <div>
+          <h2>Оставьте заявку</h2>
+          <p>Свяжемся в течение 15 минут и предложим персональный набор для вашего дома.</p>
+        </div>
+
+        <form class="lead-form" novalidate>
+          <label>
+            Имя
+            <input type="text" name="name" placeholder="Иван" required minlength="2">
+          </label>
+          <label>
+            Телефон
+            <input type="tel" name="phone" placeholder="+7 (999) 123-45-67" required>
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required>
+          </label>
+          <label>
+            Комментарий
+            <textarea name="message" rows="4" placeholder="Например, дом 120 м²"></textarea>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" name="consent" required>
+            <span>Согласен на обработку персональных данных</span>
+          </label>
+          <button type="submit" class="button button--primary">Отправить заявку</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 «Разуманя изба». Умный дом для комфортной жизни.</p>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>

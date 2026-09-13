@@ -197,11 +197,11 @@ export function LandingPage() {
 
       <main>
         <section className="relative overflow-hidden bg-[#041014]">
-          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
             <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
             <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />
           </div>
-          <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
+          <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
             <div className="text-white">
               <span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
                 Современный ремонт с гарантией

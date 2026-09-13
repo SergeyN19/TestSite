@@ -233,9 +233,28 @@ export function LandingPage() {
               </div>
             </div>
             <div className="dark-card min-h-[320px] p-4">
-              <div className="photo-placeholder min-h-[288px] rounded-[24px] border-white/15">
-                {/* TODO: Заменить блок-заглушку на реальное фото объекта */}
-                Фото объекта
+              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] rounded-[24px] border-white/15 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.24),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_55%)]" />
+                <div className="relative z-10 grid w-full gap-3">
+                  <div className="ml-auto w-[58%] rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Смета</p>
+                    <p className="mt-2 text-lg font-bold">за 24 часа</p>
+                  </div>
+                  <div className="w-[65%] rounded-2xl border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Гарантия</p>
+                    <p className="mt-2 text-lg font-bold">10 лет</p>
+                  </div>
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Чистый монтаж</p>
+                      <p className="mt-2 text-sm font-semibold">Аккуратно и без пыли</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сроки</p>
+                      <p className="mt-2 text-sm font-semibold">Поэтапно и прозрачно</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

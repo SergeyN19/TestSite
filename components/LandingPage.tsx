@@ -21,66 +21,153 @@ const OPTION_RATES: Record<ExtraOption, number> = {
   "Кухня": 1800,
 };
 
+const navItems = [
+  { label: "Услуги", id: "services" },
+  { label: "Кейсы", id: "portfolio" },
+  { label: "Калькулятор", id: "calculator" },
+  { label: "Этапы", id: "process" },
+  { label: "Контакты", id: "contacts" },
+];
+
 const proofItems = [
-  { icon: "🛡️", title: "10 лет гарантии", text: "В договоре. С перечнем работ." },
-  { icon: "🏠", title: "400+ объектов", text: "Портфолио с фото до/после." },
-  { icon: "📈", title: "97% возвращаются", text: "По данным Отзовика." },
-  { icon: "📋", title: "Смета до начала работ", text: "Фиксируем. Без доплат сверх." },
+  { value: "10 лет", title: "гарантия по договору", text: "Закрепляем перечень работ и обязательства в документах." },
+  { value: "24 часа", title: "на подготовку сметы", text: "Показываем объём, этапы и диапазон бюджета до старта." },
+  { value: "400+", title: "объектов в портфолио", text: "Квартиры, кухни, санузлы, быстрые обновления и капитальные работы." },
+  { value: "По этапам", title: "оплата после приёмки", text: "Сначала результат, затем следующий шаг по графику." },
 ];
 
 const serviceItems = [
-  { title: "Пол и потолок за 1 день", text: "Точный расчёт и закрытие работ в течение дня." },
-  { title: "Натяжные потолки за 3 часа", text: "Чистый монтаж без пыли и долгих простоев." },
-  { title: "Ремонт кухни под ключ", text: "От демонтажа до финальной установки техники." },
-  { title: "Ремонт ванной и санузла", text: "Гидроизоляция, плитка, сантехника с гарантией." },
-  { title: "Косметический ремонт", text: "Быстрое обновление квартиры без перепланировки." },
-  { title: "Капитальный ремонт", text: "Полная замена инженерии и отделки по этапам." },
+  {
+    title: "Пол и потолок за 1 день",
+    text: "Подходит для быстрого обновления комнаты перед сдачей, продажей или переездом.",
+    result: "Чистый монтаж, понятный объём работ, быстрый запуск.",
+  },
+  {
+    title: "Натяжные потолки за 3 часа",
+    text: "Быстро закрываем потолок без долгого простоя квартиры и крупных мокрых процессов.",
+    result: "Ровная геометрия, встроенный свет, минимум пыли.",
+  },
+  {
+    title: "Ремонт кухни под ключ",
+    text: "Берём на себя демонтаж, черновые работы, отделку и подготовку под установку техники.",
+    result: "Кухня готова к сборке гарнитура и подключению техники.",
+  },
+  {
+    title: "Ремонт ванной и санузла",
+    text: "Гидроизоляция, плитка, сантехника и скрытые узлы в одном цикле работ.",
+    result: "Сдаём узел полностью готовым к эксплуатации.",
+  },
+  {
+    title: "Косметический ремонт квартиры",
+    text: "Для тех, кому нужен быстрый визуальный апгрейд без перепланировки и долгой стройки.",
+    result: "Свежая отделка, обновлённые поверхности и контролируемый бюджет.",
+  },
+  {
+    title: "Капитальный ремонт по этапам",
+    text: "Когда нужна замена инженерии, выравнивание, новые покрытия и понятный календарный план.",
+    result: "Прозрачная последовательность работ и контроль каждого этапа.",
+  },
+];
+
+const portfolioItems = [
+  {
+    title: "Кухня 14 м²",
+    format: "Капитальное обновление",
+    summary: "Демонтаж старой отделки, новая электрика, выравнивание стен и подготовка под гарнитур.",
+    metrics: ["14 м²", "19 дней", "от 540 000 ₽"],
+    before: ["Устаревшая отделка", "Недостаток розеток", "Неровные стены"],
+    after: ["Подготовка под технику", "Новая световая схема", "Чистовая отделка"],
+  },
+  {
+    title: "Санузел 6 м²",
+    format: "Ремонт под ключ",
+    summary: "Полный цикл с гидроизоляцией, плиткой, заменой сантехнических узлов и финальной установкой.",
+    metrics: ["6 м²", "16 дней", "от 390 000 ₽"],
+    before: ["Старые коммуникации", "Течь в мокрой зоне", "Плитка с дефектами"],
+    after: ["Новая гидроизоляция", "Скрытая разводка", "Готовность к ежедневной эксплуатации"],
+  },
+  {
+    title: "Гостиная 22 м²",
+    format: "Пол и потолок за 1 день",
+    summary: "Быстрое обновление комнаты без длительного вывода квартиры из использования.",
+    metrics: ["22 м²", "1 день", "от 135 000 ₽"],
+    before: ["Изношенный пол", "Следы старой отделки", "Неровный потолок"],
+    after: ["Ровный потолок", "Новый пол", "Чистый монтаж без долгой стройки"],
+  },
+  {
+    title: "Студия 38 м²",
+    format: "Косметический ремонт",
+    summary: "Обновили стены, освещение и чистовые покрытия перед заселением арендаторов.",
+    metrics: ["38 м²", "12 дней", "от 420 000 ₽"],
+    before: ["Потёртые поверхности", "Слабый свет", "Уставший интерьер"],
+    after: ["Светлая отделка", "Обновлённые покрытия", "Готовность к заселению"],
+  },
+  {
+    title: "Квартира 64 м²",
+    format: "Капитальный ремонт",
+    summary: "Поэтапная замена инженерии и отделки с понятным бюджетом и промежуточной приёмкой.",
+    metrics: ["64 м²", "9 недель", "от 1,85 млн ₽"],
+    before: ["Старые сети", "Разнородная отделка", "Изношенные покрытия"],
+    after: ["Новая инженерия", "Единая отделка", "Подготовка под мебель"],
+  },
+  {
+    title: "Спальня 18 м²",
+    format: "Натяжной потолок и свет",
+    summary: "Сфокусированный проект на потолке, освещении и аккуратной сдаче без строительного мусора.",
+    metrics: ["18 м²", "3 часа", "от 48 000 ₽"],
+    before: ["Пятна и трещины", "Один сценарий света", "Неаккуратные стыки"],
+    after: ["Ровный потолок", "Точечный свет", "Чистый финиш"],
+  },
 ];
 
 const processItems = [
   {
-    title: "Замерщик приезжает",
-    text: "Бесплатно, в удобное время. 1 день.",
+    title: "Короткий созвон и задача",
+    text: "Уточняем формат ремонта, сроки и что важно именно для вашей квартиры.",
   },
   {
-    title: "Смета за 24 часа",
-    text: "Фиксированная, по позициям.",
+    title: "Выезд и замер",
+    text: "Приезжаем на объект, фиксируем размеры, объём и ограничения по помещению.",
   },
   {
-    title: "Ремонт по этапам",
-    text: "Вы платите за принятый этап.",
+    title: "Смета и календарный план",
+    text: "Показываем стоимость, этапы, материалы и точки контроля до начала работ.",
   },
   {
-    title: "Сдача и гарантия",
-    text: "Уборка + акт + 10 лет гарантии.",
+    title: "Ремонт с фотофиксацией",
+    text: "Двигаемся по согласованным этапам и подтверждаем результат перед следующим шагом.",
+  },
+  {
+    title: "Сдача и документы",
+    text: "Передаём объект, акты и гарантийные обязательства в финале проекта.",
   },
 ];
 
 const faqItems = [
   {
-    question: "Почему смета может вырасти?",
+    question: "Почему смета может измениться?",
     answer:
-      "Только если вы меняете объём работ после согласования или вскрываются скрытые дефекты, которые нельзя было увидеть до демонтажа. Все изменения оформляем допсметой до начала нового этапа.",
+      "Только если меняется объём работ после согласования или при демонтаже выявляются скрытые дефекты. Любые дополнительные работы сначала согласуем и оформляем отдельной сметой.",
   },
   {
-    question: "Есть ли скрытые доплаты за вывоз мусора и подъём?",
+    question: "Можно ли разбить оплату по этапам?",
     answer:
-      "Нет. В смету заранее вносим вывоз мусора, подъём материалов и расходники. Отдельных платежей после старта работ не добавляем без вашего согласования.",
+      "Да. Логика страницы и процесса построена вокруг поэтапной приёмки: после проверки результата закрываем этап и переходим к следующему.",
   },
   {
-    question: "Можно ли платить по этапам?",
+    question: "Что входит в быстрые форматы работ?",
     answer:
-      "Да. Оплата разбивается на этапы: демонтаж, черновые работы, чистовая отделка и сдача. Переход к следующему этапу только после приёмки предыдущего.",
+      "Для быстрых сценариев вроде пола и потолка заранее фиксируем объём, материалы и ограничения, чтобы уложиться в короткий цикл и не растягивать работы.",
   },
   {
-    question: "Что если бригада затянет сроки?",
+    question: "Как контролируются сроки?",
     answer:
-      "Сроки фиксируем в договоре и календарном плане. При отклонениях заранее уведомляем и пересогласовываем график, чтобы вы понимали причину и новые даты.",
+      "Сроки раскладываются на календарный план и контрольные точки. Если что-то влияет на график, это проговаривается до перехода к следующему этапу.",
   },
   {
-    question: "Гарантия на работы — где прописана?",
+    question: "Гарантия действительно указывается в договоре?",
     answer:
-      "Гарантия 10 лет прописывается в договоре и акте сдачи с перечнем выполненных работ. Документы передаём в день финальной приёмки.",
+      "Да. Гарантия и перечень выполненных работ закрепляются документально и передаются вместе с итоговыми актами после сдачи объекта.",
   },
 ];
 
@@ -174,20 +261,34 @@ export function LandingPage() {
   };
 
   return (
-    <div className="bg-transparent text-[#0d2026]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#061217]/80 text-white backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
+    <div className="bg-transparent text-[#18333a]">
+      <header className="sticky top-0 z-50 border-b border-[#d5e5e8] bg-[#f7fbfb]/95 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4">
           <a href="https://ena-group.ru/" className="flex items-center gap-3" target="_blank" rel="noreferrer">
-            {/* TODO: Заменить текстовый логотип на официальный логотип из ena-group.ru */}
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#06A5B8] via-[#18bfd0] to-[#0b7b8f] text-sm font-black text-white shadow-[0_18px_40px_rgba(6,165,184,0.35)]">
+            <div className="flex h-11 w-11 items-center justify-center border border-[#b7d6dc] bg-[#0f7f8f] text-sm font-black text-white">
               Е
             </div>
-            <span className="text-sm font-extrabold uppercase tracking-wide sm:text-base">ЕНА ГРУПП</span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#4c6a71]">ремонт квартир</p>
+              <p className="text-base font-extrabold uppercase tracking-[0.1em] text-[#10262c]">ЕНА ГРУПП</p>
+            </div>
           </a>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a className="hidden text-sm font-bold sm:block" href="tel:84952294422">
-              8-495-229-44-22
-            </a>
+
+          <nav className="hidden items-center gap-5 text-sm font-semibold text-[#45636a] lg:flex">
+            {navItems.map((item) => (
+              <button key={item.id} type="button" onClick={() => scrollToId(item.id)} className="transition hover:text-[#0f7f8f]">
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden text-right sm:block">
+              <p className="text-xs uppercase tracking-[0.2em] text-[#5e7b81]">Москва и МО</p>
+              <a className="text-base font-bold text-[#10262c]" href="tel:84952294422">
+                8-495-229-44-22
+              </a>
+            </div>
             <a href="tel:84952294422" className="cta-btn text-sm">
               Позвонить
             </a>
@@ -196,90 +297,164 @@ export function LandingPage() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden bg-[#041014]">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
-            <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
-            <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />
-          </div>
-          <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
-            <div className="text-white">
-              <span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
-                Современный ремонт с гарантией
-              </span>
-              <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
-              Ремонт квартир в Москве и МО. Пол и потолок — за 1 день.
+        <section className="border-b border-[#dbeaec] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f8f9_100%)]">
+          <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 lg:grid-cols-[minmax(0,1.2fr)_360px] lg:py-20">
+            <div>
+              <p className="section-label">Ремонт без тяжёлого визуального шума</p>
+              <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-tight text-[#10262c] sm:text-5xl lg:text-6xl">
+                Лёгкий, понятный лендинг для продвижения ремонта квартир в Москве и области.
               </h1>
-              <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
-              Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-[#4f6b71]">
+                Акцент на быстрые сценарии работ, прозрачную смету, гарантию и реальные форматы объектов. Пользователь сразу видит
+                услуги, примеры и путь до заявки без перегруженных блоков.
               </p>
+
               <div className="mt-8 flex flex-wrap gap-3">
                 <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
-                  Рассчитать стоимость за 2 минуты
+                  Рассчитать стоимость
                 </button>
-                <a
-                  href="tel:84952294422"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                >
-                  Позвонить сейчас
-                </a>
+                <button type="button" className="secondary-btn" onClick={() => scrollToId("portfolio")}>
+                  Посмотреть примеры работ
+                </button>
               </div>
-              <div className="mt-8 grid gap-3 sm:max-w-xl sm:grid-cols-3">
+
+              <div className="mt-10 grid gap-0 border border-[#d5e5e8] bg-white md:grid-cols-3">
                 {proofItems.slice(0, 3).map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                    <p className="text-lg">{item.icon}</p>
-                    <p className="mt-2 text-sm font-semibold">{item.title}</p>
-                  </div>
+                  <article key={item.title} className="border-b border-[#d5e5e8] p-5 last:border-b-0 md:border-b-0 md:border-r last:md:border-r-0">
+                    <p className="text-3xl font-extrabold text-[#0f7f8f]">{item.value}</p>
+                    <h2 className="mt-3 text-lg font-bold text-[#10262c]">{item.title}</h2>
+                    <p className="mt-2 text-sm leading-6 text-[#5a757b]">{item.text}</p>
+                  </article>
                 ))}
               </div>
             </div>
-            <div className="dark-card min-h-[320px] p-4">
-              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] rounded-[24px] border-white/15 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.24),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_55%)]" />
-                <div className="relative z-10 grid w-full gap-3">
-                  <div className="ml-auto w-[58%] rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Смета</p>
-                    <p className="mt-2 text-lg font-bold">за 24 часа</p>
-                  </div>
-                  <div className="w-[65%] rounded-2xl border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Гарантия</p>
-                    <p className="mt-2 text-lg font-bold">10 лет</p>
-                  </div>
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Чистый монтаж</p>
-                      <p className="mt-2 text-sm font-semibold">Аккуратно и без пыли</p>
-                    </div>
-                    <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сроки</p>
-                      <p className="mt-2 text-sm font-semibold">Поэтапно и прозрачно</p>
-                    </div>
-                  </div>
+
+            <aside className="flex flex-col gap-4 border border-[#d5e5e8] bg-white p-6">
+              <div>
+                <p className="section-label">Почему блок работает лучше</p>
+                <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Вся ключевая конверсия собрана в первом экране</h2>
+              </div>
+              <div className="grid gap-0 border border-[#d5e5e8] bg-[#f7fbfb]">
+                <div className="border-b border-[#d5e5e8] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#5f7b81]">Что получает клиент</p>
+                  <p className="mt-2 text-lg font-bold text-[#10262c]">Смету, сроки и формат работ до старта</p>
+                </div>
+                <div className="border-b border-[#d5e5e8] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#5f7b81]">Что усиливает доверие</p>
+                  <p className="mt-2 text-lg font-bold text-[#10262c]">Гарантия 10 лет и оплата по этапам</p>
+                </div>
+                <div className="p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#5f7b81]">Что ускоряет решение</p>
+                  <p className="mt-2 text-lg font-bold text-[#10262c]">Калькулятор + кейсы сразу под рукой</p>
                 </div>
               </div>
-            </div>
+              <button type="button" className="cta-btn w-full" onClick={() => scrollToId("lead-form")}>
+                Получить смету за 24 часа
+              </button>
+            </aside>
           </div>
         </section>
 
-        <section id="calculator" className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Калькулятор стоимости</h2>
-              <p className="mt-3 max-w-2xl text-sm text-[#c3e6ea] sm:text-base">
-                Соберите предварительную смету в современном калькуляторе и сразу получите понятный диапазон цены.
+        <section className="mx-auto w-full max-w-7xl px-4 py-14" id="services">
+          <div className="flex flex-col gap-4 border-b border-[#dbeaec] pb-8 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="section-label">Ключевые направления</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Компоновка блоков выстроена вокруг спроса и быстрых решений</h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
+              Вместо однотипных карточек — понятные сценарии: быстрые услуги, капитальные работы и форматы под ключ с ясным итогом для клиента.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-0 border border-[#d5e5e8] bg-white lg:grid-cols-3">
+            {serviceItems.map((item) => (
+              <article key={item.title} className="flex h-full flex-col border-b border-[#d5e5e8] p-6 lg:border-b-0 lg:border-r [&:nth-child(3n)]:lg:border-r-0 [&:nth-last-child(-n+3)]:lg:border-b-0">
+                <h3 className="text-2xl font-bold text-[#10262c]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#516d73] sm:text-base">{item.text}</p>
+                <p className="mt-4 border-t border-[#e4eff1] pt-4 text-sm font-semibold text-[#0f7f8f]">{item.result}</p>
+                <button type="button" className="secondary-btn mt-6" onClick={() => scrollToId("calculator")}>
+                  Рассчитать формат
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="portfolio" className="border-y border-[#dbeaec] bg-[#f8fcfc] py-14">
+          <div className="mx-auto w-full max-w-7xl px-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="section-label">Примеры работ</p>
+                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Портфолио стало информативнее: кейс, метрики, проблема и результат</h2>
+              </div>
+              <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
+                Вместо заглушек теперь показаны типовые работы по основным направлениям сайта: кухня, санузел, быстрые обновления и капитальные проекты.
               </p>
-              <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Тип ремонта</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            </div>
+
+            <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+              {portfolioItems.map((item) => (
+                <article key={item.title} className="flex h-full flex-col border border-[#d5e5e8] bg-white">
+                  <div className="border-b border-[#d5e5e8] bg-[linear-gradient(135deg,#eef7f8_0%,#ffffff_100%)] p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5d7980]">{item.format}</p>
+                    <h3 className="mt-3 text-2xl font-bold text-[#10262c]">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-[#506d73]">{item.summary}</p>
+                  </div>
+                  <div className="grid grid-cols-3 border-b border-[#d5e5e8] text-center text-sm font-semibold text-[#10262c]">
+                    {item.metrics.map((metric) => (
+                      <div key={metric} className="border-r border-[#d5e5e8] px-3 py-4 last:border-r-0">
+                        {metric}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid flex-1 gap-0 md:grid-cols-2">
+                    <div className="border-b border-[#d5e5e8] p-5 md:border-b-0 md:border-r">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#789298]">До</p>
+                      <ul className="mt-3 space-y-2 text-sm leading-6 text-[#4f6b71]">
+                        {item.before.map((point) => (
+                          <li key={point}>— {point}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0f7f8f]">После</p>
+                      <ul className="mt-3 space-y-2 text-sm leading-6 text-[#3f5960]">
+                        {item.after.map((point) => (
+                          <li key={point}>— {point}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <a href="/portfolio" className="cta-btn mt-8 inline-flex">
+              Смотреть все направления работ
+            </a>
+          </div>
+        </section>
+
+        <section id="calculator" className="mx-auto w-full max-w-7xl px-4 py-14">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="border border-[#d5e5e8] bg-white p-6 sm:p-8">
+              <p className="section-label">Калькулятор</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Пользователь быстрее доходит до заявки через понятный расчёт</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
+                Оставили сильную фишку страницы, но сделали её проще: три шага, моментальная вилка цены и прямой переход к форме заявки.
+              </p>
+
+              <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0f7f8f]">Шаг 1. Тип ремонта</p>
+                  <div className="mt-3 grid gap-0 border border-[#d5e5e8] sm:grid-cols-2">
                     {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
                       <button
                         type="button"
                         key={type}
-                        className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
-                          repairType === type
-                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
-                            : "border-white/10 bg-white/5 hover:bg-white/10"
-                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
+                        className={`border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold transition sm:border-r [&:nth-child(2n)]:sm:border-r-0 [&:nth-last-child(-n+2)]:sm:border-b-0 ${
+                          repairType === type ? "bg-[#0f7f8f] text-white" : "bg-white text-[#18333a] hover:bg-[#f3f9fa]"
+                        }`}
                         onClick={() => setRepairType(type)}
                       >
                         {type}
@@ -287,33 +462,35 @@ export function LandingPage() {
                     ))}
                   </div>
 
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Площадь: {area} м²</p>
-                  <input
-                    type="range"
-                    min={20}
-                    max={200}
-                    value={area}
-                    onChange={(e) => setArea(Number(e.target.value))}
-                    className="mt-3 w-full accent-[#06A5B8]"
-                  />
-                  <input
-                    type="number"
-                    min={20}
-                    max={200}
-                    value={area}
-                    onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  />
+                  <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-[#0f7f8f]">Шаг 2. Площадь: {area} м²</p>
+                  <div className="mt-3 border border-[#d5e5e8] p-4">
+                    <input
+                      type="range"
+                      min={20}
+                      max={200}
+                      value={area}
+                      onChange={(e) => setArea(Number(e.target.value))}
+                      className="w-full accent-[#0f7f8f]"
+                    />
+                    <input
+                      type="number"
+                      min={20}
+                      max={200}
+                      value={area}
+                      onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
+                      className="mt-4 w-28 border border-[#c8dde1] bg-white px-3 py-2 text-sm text-[#18333a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0]"
+                    />
+                  </div>
 
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-[#0f7f8f]">Шаг 3. Дополнительные опции</p>
+                  <div className="mt-3 grid gap-0 border border-[#d5e5e8] sm:grid-cols-2">
                     {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
-                      <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
+                      <label key={option} className="flex cursor-pointer items-center gap-3 border-b border-[#d5e5e8] px-4 py-4 text-sm text-[#28434a] transition hover:bg-[#f5fafb] sm:border-r [&:nth-child(2n)]:sm:border-r-0 [&:nth-last-child(-n+2)]:sm:border-b-0">
                         <input
                           type="checkbox"
                           checked={options.includes(option)}
                           onChange={() => toggleOption(option)}
-                          className="size-4 accent-[#06A5B8]"
+                          className="size-4 accent-[#0f7f8f]"
                         />
                         {option}
                       </label>
@@ -321,128 +498,146 @@ export function LandingPage() {
                   </div>
                 </div>
 
-                <div className="glass-card p-5 text-[#0c2025] sm:p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0b7b8f]">Ваша вилка стоимости</p>
-                  <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
+                <aside className="flex flex-col border border-[#d5e5e8] bg-[#f8fcfc] p-5">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0f7f8f]">Вилка стоимости</p>
+                  <p className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">
                     {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
                   </p>
-                  <p className="mt-3 text-sm text-[#32535b]">
+                  <p className="mt-3 text-sm leading-6 text-[#516d73]">
                     {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
                   </p>
-                  <div className="mt-6 rounded-2xl border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
-                    Точный расчёт подготовим после замера и закрепим его в смете до старта работ.
+                  <div className="mt-6 border-y border-[#d5e5e8] py-4 text-sm leading-6 text-[#4e6a70]">
+                    Точный расчёт делаем после замера и закрепляем в смете до старта работ. Это помогает странице не просто собирать заявки, а готовить пользователя к разговору о бюджете.
                   </div>
                   <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
                     Получить точную смету
                   </button>
-                </div>
+                </aside>
+              </div>
+            </div>
+
+            <aside className="flex flex-col justify-between border border-[#d5e5e8] bg-[#10262c] p-6 text-white">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8fdce4]">UX-подсказка</p>
+                <h2 className="mt-3 text-2xl font-extrabold">После расчёта пользователь сразу понимает следующий шаг</h2>
+                <ul className="mt-6 space-y-3 text-sm leading-6 text-[#d2ebee]">
+                  <li>— на что влияет выбранный формат ремонта</li>
+                  <li>— как площадь и опции меняют диапазон бюджета</li>
+                  <li>— куда нажать, чтобы перевести интерес в заявку</li>
+                </ul>
+              </div>
+              <div className="mt-8 border-t border-white/15 pt-5 text-sm text-[#d2ebee]">Смета за 24 часа · бесплатный выезд · оплата по этапам</div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="process" className="border-y border-[#dbeaec] bg-[#f8fcfc] py-14">
+          <div className="mx-auto w-full max-w-7xl px-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="section-label">Как проходит работа</p>
+                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Блоки перестроены в понятный маршрут от первого касания до сдачи объекта</h2>
+              </div>
+              <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
+                Эта секция снимает тревожность и поддерживает SEO/конверсию: замер, смета, этапы, документы и гарантия описаны коротко и по делу.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-0 border border-[#d5e5e8] bg-white md:grid-cols-5">
+              {processItems.map((item, index) => (
+                <article key={item.title} className="border-b border-[#d5e5e8] p-5 last:border-b-0 md:border-b-0 md:border-r last:md:border-r-0">
+                  <p className="text-4xl font-extrabold text-[#0f7f8f]">0{index + 1}</p>
+                  <h3 className="mt-4 text-xl font-bold text-[#10262c]">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[#516d73]">{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-7xl px-4 py-14">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <div>
+              <p className="section-label">Факты вместо обещаний</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Сохранили сильные продающие элементы, но сделали подачу легче и чище</h2>
+              <div className="mt-8 grid gap-0 border border-[#d5e5e8] bg-white sm:grid-cols-2 xl:grid-cols-4">
+                {proofItems.map((item) => (
+                  <article key={item.title} className="border-b border-[#d5e5e8] p-5 sm:border-r [&:nth-child(2n)]:sm:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:[&:last-child]:border-r-0">
+                    <p className="text-3xl font-extrabold text-[#0f7f8f]">{item.value}</p>
+                    <h3 className="mt-3 text-lg font-bold text-[#10262c]">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[#546f75]">{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="border border-[#d5e5e8] bg-white p-6">
+              <p className="section-label">Быстрый переход</p>
+              <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Не заставляем пользователя искать, что делать дальше</h2>
+              <div className="mt-6 grid gap-0 border border-[#d5e5e8]">
+                <button type="button" onClick={() => scrollToId("portfolio")} className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                  Посмотреть кейсы и форматы работ
+                </button>
+                <button type="button" onClick={() => scrollToId("calculator")} className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                  Собрать предварительную смету
+                </button>
+                <button type="button" onClick={() => scrollToId("lead-form")} className="px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                  Оставить заявку на замер
+                </button>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Факты вместо обещаний</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {proofItems.map((item) => (
-              <article key={item.title} className="glass-card p-5">
-                <p className="text-2xl">{item.icon}</p>
-                <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                <p className="mt-1 text-sm text-[#446269]">{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Услуги</h2>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {serviceItems.map((item) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                  <h3 className="text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
-                    Узнать цену
-                  </button>
-                </article>
-              ))}
-            </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Портфолио</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {Array.from({ length: 6 }, (_, i) => i + 1).map((caseIndex) => (
-              <article key={caseIndex} className="glass-card p-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="photo-placeholder min-h-[120px] text-sm">До</div>
-                  <div className="photo-placeholder min-h-[120px] text-sm">После</div>
-                </div>
-                {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
-                <p className="mt-3 text-sm text-[#446269]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
-              </article>
-            ))}
-          </div>
-          <a href="/portfolio" className="cta-btn mt-6 inline-block">
-            Смотреть все работы
-          </a>
-        </section>
-
-        <section className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Как проходит работа</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {processItems.map((item, index) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                    <p className="text-2xl font-black text-[#66e3ef]">{index + 1}</p>
-                  <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
-                </article>
-              ))}
-            </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">FAQ</h2>
-          <div className="mt-6 space-y-3">
+        <section className="mx-auto w-full max-w-7xl px-4 py-14">
+          <p className="section-label">FAQ</p>
+          <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Частые вопросы закрывают возражения до звонка</h2>
+          <div className="mt-8 border border-[#d5e5e8] bg-white">
             {faqItems.map((item, index) => {
               const isOpen = openFaq === index;
               return (
-                <article key={item.question} className="glass-card overflow-hidden">
+                <article key={item.question} className="border-b border-[#d5e5e8] last:border-b-0">
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left text-base font-bold sm:px-5"
+                    className="flex w-full items-center justify-between gap-3 px-5 py-5 text-left text-base font-bold text-[#10262c]"
                     onClick={() => setOpenFaq(isOpen ? null : index)}
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${index}`}
                   >
                     {item.question}
-                    <span className="text-[#06A5B8]">{isOpen ? "−" : "+"}</span>
+                    <span className="text-[#0f7f8f]">{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">{item.answer}</p> : null}
+                  {isOpen ? (
+                    <p id={`faq-answer-${index}`} className="border-t border-[#ebf2f3] px-5 py-5 text-sm leading-6 text-[#546f75]">
+                      {item.answer}
+                    </p>
+                  ) : null}
                 </article>
               );
             })}
           </div>
         </section>
 
-        <section id="lead-form" className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире</h2>
-              <form onSubmit={handleSubmit} className="mt-6 grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-5 sm:max-w-xl sm:p-6">
+        <section id="lead-form" className="border-y border-[#dbeaec] bg-[#10262c] py-14 text-white">
+          <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8fdce4]">Заявка на смету</p>
+              <h2 className="mt-3 max-w-3xl text-3xl font-extrabold sm:text-4xl">Финальный блок стал короче и понятнее: форма, преимущества и контакт рядом</h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-[#d2ebee] sm:text-base">
+                Пользователь уже видел услуги, кейсы и расчёт, поэтому здесь остаётся только один шаг — оставить контакт и получить предметный разговор по своему объекту.
+              </p>
+              <div className="mt-8 grid gap-0 border border-white/15 text-sm text-[#d2ebee] sm:grid-cols-3">
+                <div className="border-b border-white/15 p-4 sm:border-b-0 sm:border-r">Бесплатный замер</div>
+                <div className="border-b border-white/15 p-4 sm:border-b-0 sm:border-r">Смета до начала работ</div>
+                <div className="p-4">Ответ в течение 15 минут</div>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="grid gap-4 border border-white/15 bg-white/5 p-6 backdrop-blur-sm">
               <label className="text-sm">
                 Имя
                 <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  className="mt-2 w-full border border-white/15 bg-[#0d2328] px-3 py-3 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -450,7 +645,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Телефон
                 <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  className="mt-2 w-full border border-white/15 bg-[#0d2328] px-3 py-3 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0]"
                   placeholder="+79991234567"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -459,7 +654,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Что нужно отремонтировать
                 <select
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  className="mt-2 w-full border border-white/15 bg-[#0d2328] px-3 py-3 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0]"
                   value={service}
                   onChange={(e) => setService(e.target.value as RepairType | "Другое")}
                 >
@@ -473,38 +668,42 @@ export function LandingPage() {
               <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
                 {isSubmitting ? "Отправка..." : "Получить смету"}
               </button>
-              {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
-              {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
+              {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ffb0b0]">{submitError}</p> : null}
+              {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#a7f5bd]">{submitMessage}</p> : null}
             </form>
-            </div>
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Контакты</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <a href="tel:84952294422" className="glass-card p-4 font-bold">
-              Телефон: 8-495-229-44-22
+        <section id="contacts" className="mx-auto w-full max-w-7xl px-4 py-14">
+          <div className="grid gap-0 border border-[#d5e5e8] bg-white lg:grid-cols-[minmax(0,1fr)_280px_280px]">
+            <div className="border-b border-[#d5e5e8] p-6 lg:border-b-0 lg:border-r">
+              <p className="section-label">Контакты</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c]">В финале — быстрые каналы связи без лишнего шума</h2>
+              <p className="mt-4 text-sm leading-7 text-[#546f75] sm:text-base">
+                Телефон, мессенджеры и адрес собраны в одном прямом блоке. Пользователь не теряется и может выбрать удобный способ связи.
+              </p>
+            </div>
+            <a href="tel:84952294422" className="border-b border-[#d5e5e8] p-6 font-bold text-[#10262c] lg:border-b-0 lg:border-r">
+              Телефон
+              <span className="mt-2 block text-2xl text-[#0f7f8f]">8-495-229-44-22</span>
             </a>
-            <div className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/74952294422" target="_blank" rel="noreferrer" className="cta-btn text-center">
+            <div className="grid grid-cols-2 border-b border-[#d5e5e8] lg:border-b-0">
+              <a href="https://wa.me/74952294422" target="_blank" rel="noreferrer" className="flex items-center justify-center border-r border-[#d5e5e8] p-6 text-sm font-bold text-[#10262c] transition hover:bg-[#f6fbfb]">
                 WhatsApp
               </a>
-              <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="cta-btn text-center">
+              <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="flex items-center justify-center p-6 text-sm font-bold text-[#10262c] transition hover:bg-[#f6fbfb]">
                 Telegram
               </a>
             </div>
-            <p className="glass-card p-4 text-sm sm:col-span-2">
-              Адрес: г. Москва, Анадырский пр-д, д.21
-              <br />
-              Работаем в Москве и Подмосковье
-            </p>
+          </div>
+          <div className="border-x border-b border-[#d5e5e8] bg-[#f8fcfc] p-6 text-sm text-[#546f75] sm:text-base">
+            Адрес: г. Москва, Анадырский пр-д, д.21 · Работаем в Москве и Подмосковье
           </div>
         </section>
       </main>
 
       <footer className="border-t border-[#dcecef] bg-[#edf7f8] py-6">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 ЕНА ГРУПП</p>
           <a href="/privacy">Политика конфиденциальности</a>
           <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>

@@ -43,7 +43,7 @@ export default function PortfolioPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#5d7980]">Портфолио ЕНА ГРУПП</p>
       <h1 className="mt-4 max-w-4xl text-4xl font-extrabold text-[#10262c] sm:text-5xl">Примеры работ по основным направлениям ремонта</h1>
       <p className="mt-5 max-w-3xl text-base leading-8 text-[#536f76] sm:text-lg">
-        Страница больше не выглядит как заглушка: здесь собраны типовые форматы проектов, которые поддерживают ключевые направления лендинга и помогают пользователю быстрее выбрать нужную услугу.
+        Здесь собраны типовые проекты по кухням, санузлам, быстрым обновлениям и капитальному ремонту, чтобы вы могли выбрать близкий к своему объекту формат работ.
       </p>
 
       <div className="mt-10 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">

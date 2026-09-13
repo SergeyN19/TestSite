@@ -152,7 +152,7 @@ const faqItems = [
   {
     question: "Можно ли разбить оплату по этапам?",
     answer:
-      "Да. Логика страницы и процесса построена вокруг поэтапной приёмки: после проверки результата закрываем этап и переходим к следующему.",
+      "Да. Оплата может быть разбита по этапам: после проверки результата закрываем текущий этап и согласуем переход к следующему.",
   },
   {
     question: "Что входит в быстрые форматы работ?",
@@ -300,13 +300,13 @@ export function LandingPage() {
         <section className="border-b border-[#dbeaec] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f8f9_100%)]">
           <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 lg:grid-cols-[minmax(0,1.2fr)_360px] lg:py-20">
             <div>
-              <p className="section-label">Ремонт без тяжёлого визуального шума</p>
+              <p className="section-label">Ремонт квартир в Москве и МО</p>
               <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-tight text-[#10262c] sm:text-5xl lg:text-6xl">
-                Лёгкий, понятный лендинг для продвижения ремонта квартир в Москве и области.
+                Ремонт квартир под ключ, кухни, санузлы, полы и потолки — с понятной сметой и аккуратной сдачей.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-[#4f6b71]">
-                Акцент на быстрые сценарии работ, прозрачную смету, гарантию и реальные форматы объектов. Пользователь сразу видит
-                услуги, примеры и путь до заявки без перегруженных блоков.
+                Подберём формат под ваш объект: от быстрого обновления комнаты до капитального ремонта квартиры. Замер, смета,
+                сроки и этапы фиксируем до старта работ.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -331,8 +331,8 @@ export function LandingPage() {
 
             <aside className="flex flex-col gap-4 border border-[#d5e5e8] bg-white p-6">
               <div>
-                <p className="section-label">Почему блок работает лучше</p>
-                <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Вся ключевая конверсия собрана в первом экране</h2>
+                <p className="section-label">Что важно перед стартом</p>
+                <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Сразу понимаете бюджет, сроки и формат работ</h2>
               </div>
               <div className="grid gap-0 border border-[#d5e5e8] bg-[#f7fbfb]">
                 <div className="border-b border-[#d5e5e8] p-4">
@@ -359,10 +359,10 @@ export function LandingPage() {
           <div className="flex flex-col gap-4 border-b border-[#dbeaec] pb-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="section-label">Ключевые направления</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Компоновка блоков выстроена вокруг спроса и быстрых решений</h2>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Услуги для быстрых обновлений и ремонтов под ключ</h2>
             </div>
             <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
-              Вместо однотипных карточек — понятные сценарии: быстрые услуги, капитальные работы и форматы под ключ с ясным итогом для клиента.
+              Выберите подходящий сценарий: быстрый монтаж, косметическое обновление, ремонт кухни, санузла или полноценный капитальный проект.
             </p>
           </div>
 
@@ -385,10 +385,10 @@ export function LandingPage() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="section-label">Примеры работ</p>
-                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Портфолио стало информативнее: кейс, метрики, проблема и результат</h2>
+                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Примеры работ по популярным запросам клиентов</h2>
               </div>
               <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
-                Вместо заглушек теперь показаны типовые работы по основным направлениям сайта: кухня, санузел, быстрые обновления и капитальные проекты.
+                Собрали типовые кейсы по кухням, санузлам, быстрым обновлениям и капитальному ремонту, чтобы проще было соотнести услугу со своим объектом.
               </p>
             </div>
 
@@ -439,9 +439,9 @@ export function LandingPage() {
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="border border-[#d5e5e8] bg-white p-6 sm:p-8">
               <p className="section-label">Калькулятор</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Пользователь быстрее доходит до заявки через понятный расчёт</h2>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Рассчитайте предварительный бюджет за пару минут</h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
-                Оставили сильную фишку страницы, но сделали её проще: три шага, моментальная вилка цены и прямой переход к форме заявки.
+                Выберите тип ремонта, укажите площадь и дополнительные опции — сразу увидите ориентир по стоимости до выезда замерщика.
               </p>
 
               <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -507,7 +507,7 @@ export function LandingPage() {
                     {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
                   </p>
                   <div className="mt-6 border-y border-[#d5e5e8] py-4 text-sm leading-6 text-[#4e6a70]">
-                    Точный расчёт делаем после замера и закрепляем в смете до старта работ. Это помогает странице не просто собирать заявки, а готовить пользователя к разговору о бюджете.
+                    Точный расчёт делаем после замера и закрепляем в смете до старта работ, чтобы вы заранее понимали бюджет и состав работ.
                   </div>
                   <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
                     Получить точную смету
@@ -518,12 +518,12 @@ export function LandingPage() {
 
             <aside className="flex flex-col justify-between border border-[#d5e5e8] bg-[#10262c] p-6 text-white">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8fdce4]">UX-подсказка</p>
-                <h2 className="mt-3 text-2xl font-extrabold">После расчёта пользователь сразу понимает следующий шаг</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8fdce4]">Что покажет расчёт</p>
+                <h2 className="mt-3 text-2xl font-extrabold">Вы заранее видите вилку бюджета до замера</h2>
                 <ul className="mt-6 space-y-3 text-sm leading-6 text-[#d2ebee]">
-                  <li>— на что влияет выбранный формат ремонта</li>
-                  <li>— как площадь и опции меняют диапазон бюджета</li>
-                  <li>— куда нажать, чтобы перевести интерес в заявку</li>
+                  <li>— какой бюджет нужен для выбранного формата ремонта</li>
+                  <li>— как площадь и дополнительные опции меняют стоимость</li>
+                  <li>— с каким запросом удобнее выходить на замер и смету</li>
                 </ul>
               </div>
               <div className="mt-8 border-t border-white/15 pt-5 text-sm text-[#d2ebee]">Смета за 24 часа · бесплатный выезд · оплата по этапам</div>
@@ -536,10 +536,10 @@ export function LandingPage() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="section-label">Как проходит работа</p>
-                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Блоки перестроены в понятный маршрут от первого касания до сдачи объекта</h2>
+                <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">От первого звонка до сдачи объекта — по понятным этапам</h2>
               </div>
               <p className="max-w-2xl text-sm leading-6 text-[#5a757b] sm:text-base">
-                Эта секция снимает тревожность и поддерживает SEO/конверсию: замер, смета, этапы, документы и гарантия описаны коротко и по делу.
+                Замер, смета, работы, приёмка и документы идут в понятной последовательности, чтобы вы видели весь путь проекта заранее.
               </p>
             </div>
 
@@ -559,7 +559,7 @@ export function LandingPage() {
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div>
               <p className="section-label">Факты вместо обещаний</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Сохранили сильные продающие элементы, но сделали подачу легче и чище</h2>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Почему нам доверяют ремонт квартиры и отдельных помещений</h2>
               <div className="mt-8 grid gap-0 border border-[#d5e5e8] bg-white sm:grid-cols-2 xl:grid-cols-4">
                 {proofItems.map((item) => (
                   <article key={item.title} className="border-b border-[#d5e5e8] p-5 sm:border-r [&:nth-child(2n)]:sm:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:[&:last-child]:border-r-0">
@@ -572,8 +572,8 @@ export function LandingPage() {
             </div>
 
             <div className="border border-[#d5e5e8] bg-white p-6">
-              <p className="section-label">Быстрый переход</p>
-              <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Не заставляем пользователя искать, что делать дальше</h2>
+              <p className="section-label">Следующий шаг</p>
+              <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Выберите удобный путь: кейсы, расчёт или заявка</h2>
               <div className="mt-6 grid gap-0 border border-[#d5e5e8]">
                 <button type="button" onClick={() => scrollToId("portfolio")} className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
                   Посмотреть кейсы и форматы работ
@@ -591,7 +591,7 @@ export function LandingPage() {
 
         <section className="mx-auto w-full max-w-7xl px-4 py-14">
           <p className="section-label">FAQ</p>
-          <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Частые вопросы закрывают возражения до звонка</h2>
+          <h2 className="mt-3 text-3xl font-extrabold text-[#10262c] sm:text-4xl">Ответы на частые вопросы перед стартом ремонта</h2>
           <div className="mt-8 border border-[#d5e5e8] bg-white">
             {faqItems.map((item, index) => {
               const isOpen = openFaq === index;
@@ -622,9 +622,9 @@ export function LandingPage() {
           <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8fdce4]">Заявка на смету</p>
-              <h2 className="mt-3 max-w-3xl text-3xl font-extrabold sm:text-4xl">Финальный блок стал короче и понятнее: форма, преимущества и контакт рядом</h2>
+              <h2 className="mt-3 max-w-3xl text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире и обсудите удобные сроки</h2>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-[#d2ebee] sm:text-base">
-                Пользователь уже видел услуги, кейсы и расчёт, поэтому здесь остаётся только один шаг — оставить контакт и получить предметный разговор по своему объекту.
+                Оставьте контакт, и мы подготовим предметный разговор по вашему объекту: с перечнем работ, ориентиром по бюджету и следующим шагом после замера.
               </p>
               <div className="mt-8 grid gap-0 border border-white/15 text-sm text-[#d2ebee] sm:grid-cols-3">
                 <div className="border-b border-white/15 p-4 sm:border-b-0 sm:border-r">Бесплатный замер</div>
@@ -678,9 +678,9 @@ export function LandingPage() {
           <div className="grid gap-0 border border-[#d5e5e8] bg-white lg:grid-cols-[minmax(0,1fr)_280px_280px]">
             <div className="border-b border-[#d5e5e8] p-6 lg:border-b-0 lg:border-r">
               <p className="section-label">Контакты</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c]">В финале — быстрые каналы связи без лишнего шума</h2>
+              <h2 className="mt-3 text-3xl font-extrabold text-[#10262c]">Свяжитесь удобным способом: звонок или мессенджер</h2>
               <p className="mt-4 text-sm leading-7 text-[#546f75] sm:text-base">
-                Телефон, мессенджеры и адрес собраны в одном прямом блоке. Пользователь не теряется и может выбрать удобный способ связи.
+                Выберите звонок, WhatsApp или Telegram — ответим, уточним задачу и согласуем следующий шаг по объекту.
               </p>
             </div>
             <a href="tel:84952294422" className="border-b border-[#d5e5e8] p-6 font-bold text-[#10262c] lg:border-b-0 lg:border-r">

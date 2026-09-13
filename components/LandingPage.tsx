@@ -323,8 +323,8 @@ export function LandingPage() {
             {Array.from({ length: 6 }, (_, i) => i + 1).map((caseIndex) => (
               <article key={caseIndex} className="rounded-2xl border border-[#1c1c1c1f] bg-white p-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="photo-placeholder min-h-[120px] text-sm">До</div>
-                  <div className="photo-placeholder min-h-[120px] text-sm">После</div>
+                  <div role="img" aria-label="Фото объекта до ремонта" className="photo-placeholder min-h-[120px] text-sm">До</div>
+                  <div role="img" aria-label="Фото объекта после ремонта" className="photo-placeholder min-h-[120px] text-sm">После</div>
                 </div>
                 {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
                 <p className="mt-3 text-sm text-[#1c1c1ccc]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>

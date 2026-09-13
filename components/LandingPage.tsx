@@ -29,31 +29,43 @@ const proofItems = [
 ];
 
 const serviceItems = [
-  { title: "Пол и потолок за 1 день", text: "Точный расчёт и закрытие работ в течение дня." },
-  { title: "Натяжные потолки за 3 часа", text: "Чистый монтаж без пыли и долгих простоев." },
-  { title: "Ремонт кухни под ключ", text: "От демонтажа до финальной установки техники." },
-  { title: "Ремонт ванной и санузла", text: "Гидроизоляция, плитка, сантехника с гарантией." },
-  { title: "Косметический ремонт", text: "Быстрое обновление квартиры без перепланировки." },
-  { title: "Капитальный ремонт", text: "Полная замена инженерии и отделки по этапам." },
+  { icon: "🧱", title: "Пол и потолок за 1 день", text: "Точный расчёт и закрытие работ в течение дня." },
+  { icon: "✨", title: "Натяжные потолки за 3 часа", text: "Чистый монтаж без пыли и долгих простоев." },
+  { icon: "🍽️", title: "Ремонт кухни под ключ", text: "От демонтажа до финальной установки техники." },
+  { icon: "🛁", title: "Ремонт ванной и санузла", text: "Гидроизоляция, плитка, сантехника с гарантией." },
+  { icon: "🎨", title: "Косметический ремонт", text: "Быстрое обновление квартиры без перепланировки." },
+  { icon: "🏗️", title: "Капитальный ремонт", text: "Полная замена инженерии и отделки по этапам." },
 ];
 
 const processItems = [
   {
+    icon: "📐",
     title: "Замерщик приезжает",
     text: "Бесплатно, в удобное время. 1 день.",
   },
   {
+    icon: "🧾",
     title: "Смета за 24 часа",
     text: "Фиксированная, по позициям.",
   },
   {
+    icon: "🔨",
     title: "Ремонт по этапам",
     text: "Вы платите за принятый этап.",
   },
   {
+    icon: "✅",
     title: "Сдача и гарантия",
     text: "Уборка + акт + 10 лет гарантии.",
   },
+];
+
+const quizItems = [
+  "Какой тип ремонта вам нужен",
+  "Площадь и количество комнат",
+  "Состояние квартиры сейчас",
+  "Желаемые сроки старта и сдачи",
+  "Ваши приоритеты по бюджету и материалам",
 ];
 
 const faqItems = [
@@ -195,7 +207,7 @@ export function LandingPage() {
         </div>
       </header>
 
-      <main>
+      <main className="pb-24 md:pb-0">
         <section className="relative overflow-hidden bg-[#041014]">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
             <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
@@ -212,9 +224,12 @@ export function LandingPage() {
               <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
               Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
               </p>
+              <p className="mt-4 inline-flex rounded-full border border-[#ffcd75]/30 bg-[#ffcd75]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#ffe3a8]">
+               ⏳ Осталось 5 мест на этот месяц
+              </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
-                  Рассчитать стоимость за 2 минуты
+               <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
+                 Рассчитать стоимость за 2 минуты
                 </button>
                 <a
                   href="tel:84952294422"
@@ -361,8 +376,9 @@ export function LandingPage() {
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {serviceItems.map((item) => (
                   <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                   <p className="text-2xl">{item.icon}</p>
                   <h3 className="text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
+                   <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
                     Узнать цену
                   </button>
@@ -399,9 +415,10 @@ export function LandingPage() {
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {processItems.map((item, index) => (
                   <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                    <p className="text-2xl font-black text-[#66e3ef]">{index + 1}</p>
+                   <p className="text-2xl">{item.icon}</p>
+                   <p className="mt-2 text-2xl font-black text-[#66e3ef]">{index + 1}</p>
                   <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
+                   <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
                 </article>
               ))}
@@ -431,6 +448,24 @@ export function LandingPage() {
                 </article>
               );
             })}
+          </div>
+        </section>
+
+        <section id="quiz" className="mx-auto w-full max-w-6xl px-4 py-14">
+          <div className="glass-card p-6 sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#0b7b8f]">Квиз за 2 минуты</p>
+            <h2 className="mt-3 text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Ответьте на 5 вопросов и получите смету и 3 планировочных решения</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {quizItems.map((item, index) => (
+                <article key={item} className="rounded-2xl border border-[#d5ebee] bg-white p-4">
+                  <p className="text-sm font-black text-[#06A5B8]">{index + 1}/5</p>
+                  <p className="mt-2 text-sm font-semibold text-[#1b3d45]">{item}</p>
+                </article>
+              ))}
+            </div>
+            <button type="button" className="cta-btn mt-6" onClick={() => scrollToId("lead-form")}>
+              Пройти квиз и получить смету
+            </button>
           </div>
         </section>
 
@@ -487,8 +522,8 @@ export function LandingPage() {
               Телефон: 8-495-229-44-22
             </a>
             <div className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/74952294422" target="_blank" rel="noreferrer" className="cta-btn text-center">
-                WhatsApp
+              <a href="https://max.ru" target="_blank" rel="noreferrer" className="cta-btn text-center">
+                MAX
               </a>
               <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="cta-btn text-center">
                 Telegram
@@ -502,6 +537,17 @@ export function LandingPage() {
           </div>
         </section>
       </main>
+
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/15 bg-[#061217]/95 p-3 backdrop-blur md:hidden">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-2 gap-2">
+          <button type="button" className="cta-btn w-full px-3 py-2 text-sm" onClick={() => scrollToId("quiz")}>
+            Пройти квиз
+          </button>
+          <button type="button" className="inline-flex w-full items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-bold text-white transition hover:bg-white/15" onClick={() => scrollToId("calculator")}>
+            Калькулятор
+          </button>
+        </div>
+      </div>
 
       <footer className="border-t border-[#dcecef] bg-[#edf7f8] py-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">

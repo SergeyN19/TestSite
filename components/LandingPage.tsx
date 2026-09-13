@@ -196,7 +196,7 @@ export function LandingPage() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden bg-[#041014]">
           <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full">
             <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
             <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />

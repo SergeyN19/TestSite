@@ -243,7 +243,7 @@ export function LandingPage() {
               <div className="mt-8 grid gap-3 sm:max-w-xl sm:grid-cols-3">
                 {proofItems.slice(0, 3).map((item) => (
                   <div key={item.title} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                    <p className="text-lg">{item.icon}</p>
+                    <p aria-hidden="true" className="text-lg">{item.icon}</p>
                     <p className="mt-2 text-sm font-semibold">{item.title}</p>
                   </div>
                 ))}
@@ -378,7 +378,7 @@ export function LandingPage() {
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {serviceItems.map((item) => (
                   <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                   <p className="text-2xl">{item.icon}</p>
+                   <p aria-hidden="true" className="text-2xl">{item.icon}</p>
                   <h3 className="text-xl font-bold">{item.title}</h3>
                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>

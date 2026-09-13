@@ -311,12 +311,12 @@ export function LandingPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
+                <a href="#calculator" className="cta-btn">
                   Рассчитать стоимость
-                </button>
-                <button type="button" className="secondary-btn" onClick={() => scrollToId("portfolio")}>
+                </a>
+                <a href="#portfolio" className="secondary-btn">
                   Посмотреть примеры работ
-                </button>
+                </a>
               </div>
 
               <div className="mt-10 grid gap-0 border border-[#d5e5e8] bg-white md:grid-cols-3">
@@ -576,15 +576,15 @@ export function LandingPage() {
               <p className="section-label">Следующий шаг</p>
               <h2 className="mt-3 text-2xl font-extrabold text-[#10262c]">Выберите удобный путь: кейсы, расчёт или заявка</h2>
               <div className="mt-6 grid gap-0 border border-[#d5e5e8]">
-                <button type="button" onClick={() => scrollToId("portfolio")} className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                <a href="#portfolio" className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
                   Посмотреть кейсы и форматы работ
-                </button>
-                <button type="button" onClick={() => scrollToId("calculator")} className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                </a>
+                <a href="#calculator" className="border-b border-[#d5e5e8] px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
                   Собрать предварительную смету
-                </button>
-                <button type="button" onClick={() => scrollToId("lead-form")} className="px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
+                </a>
+                <a href="#lead-form" className="px-4 py-4 text-left text-sm font-semibold text-[#18333a] transition hover:bg-[#f6fbfb]">
                   Оставить заявку на замер
-                </button>
+                </a>
               </div>
             </div>
           </div>

@@ -431,7 +431,7 @@ export function LandingPage() {
             </div>
 
             <Link href="/portfolio" className="cta-btn mt-8 inline-flex">
-              Смотреть все направления работ
+              Открыть страницу с примерами работ
             </Link>
           </div>
         </section>

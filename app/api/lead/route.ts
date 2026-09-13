@@ -7,7 +7,14 @@ interface LeadPayload {
 }
 
 export async function POST(request: Request) {
-  const payload = (await request.json()) as LeadPayload;
+  let payload: LeadPayload;
+
+  try {
+    payload = (await request.json()) as LeadPayload;
+  } catch {
+    return NextResponse.json({ success: false, error: "Некорректный JSON" }, { status: 400 });
+  }
+
   const name = payload.name?.trim() ?? "";
   const phone = payload.phone?.trim() ?? "";
   const service = payload.service?.trim() ?? "";

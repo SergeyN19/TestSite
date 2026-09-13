@@ -204,7 +204,7 @@ export function LandingPage() {
             <p className="mt-4 text-base text-[#1c1c1ccc] sm:text-lg">
               Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
             </p>
-            <button className="cta-btn mt-6" onClick={() => scrollToId("calculator")}>
+            <button type="button" className="cta-btn mt-6" onClick={() => scrollToId("calculator")}>
               Рассчитать стоимость за 2 минуты
             </button>
           </div>
@@ -223,6 +223,7 @@ export function LandingPage() {
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
                     <button
+                      type="button"
                       key={type}
                       className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
                         repairType === type
@@ -278,7 +279,7 @@ export function LandingPage() {
                 <p className="mt-3 text-sm text-[#1c1c1ccc]">
                   {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
                 </p>
-                <button className="cta-btn mt-6" onClick={handleTransferToForm}>
+                <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
                   Получить точную смету
                 </button>
               </div>
@@ -307,7 +308,7 @@ export function LandingPage() {
                 <article key={item.title} className="rounded-2xl border border-[#ffffff29] bg-[#ffffff08] p-5">
                   <h3 className="text-xl font-bold">{item.title}</h3>
                   <p className="mt-2 text-sm text-[#f7f5f0cc]">{item.text}</p>
-                  <button className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
+                  <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
                     Узнать цену
                   </button>
                 </article>
@@ -360,6 +361,7 @@ export function LandingPage() {
               return (
                 <article key={item.question} className="overflow-hidden rounded-2xl border border-[#1c1c1c26] bg-white">
                   <button
+                    type="button"
                     className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left text-base font-bold sm:px-5"
                     onClick={() => setOpenFaq(isOpen ? null : index)}
                     aria-expanded={isOpen}
@@ -410,7 +412,7 @@ export function LandingPage() {
                   <option>Другое</option>
                 </select>
               </label>
-              <button disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
+              <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
                 {isSubmitting ? "Отправка..." : "Получить смету"}
               </button>
               {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}

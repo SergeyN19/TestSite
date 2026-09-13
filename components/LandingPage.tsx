@@ -226,7 +226,7 @@ export function LandingPage() {
               <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
               Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
               </p>
-              <p role="status" aria-live="polite" className="mt-4 inline-flex rounded-full border border-[#ffd37d]/60 bg-[#ffe7b3] px-4 py-2 text-sm font-bold uppercase tracking-[0.12em] text-[#4d3300]">
+              <p className="mt-4 inline-flex rounded-full border border-[#ffd37d]/60 bg-[#ffe7b3] px-4 py-2 text-sm font-bold uppercase tracking-[0.12em] text-[#4d3300]">
                ⏳ Промо-квота: «Осталось 5 мест на этот месяц»
               </p>
               <div className="mt-8 flex flex-wrap gap-3">

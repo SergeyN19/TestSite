@@ -330,7 +330,7 @@ export function LandingPage() {
               </article>
             ))}
           </div>
-          <a href="#" className="cta-btn mt-6 inline-block">
+          <a href="#" className="cta-btn mt-6 inline-block" aria-label="Открыть полный список работ (заглушка)">
             Смотреть все работы
           </a>
         </section>
@@ -361,11 +361,13 @@ export function LandingPage() {
                   <button
                     className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left text-base font-bold sm:px-5"
                     onClick={() => setOpenFaq(isOpen ? null : index)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
                   >
                     {item.question}
                     <span className="text-[#FF5A1F]">{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen ? <p className="border-t border-[#1c1c1c14] px-4 py-4 text-sm text-[#1c1c1ccc] sm:px-5">{item.answer}</p> : null}
+                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#1c1c1c14] px-4 py-4 text-sm text-[#1c1c1ccc] sm:px-5">{item.answer}</p> : null}
                 </article>
               );
             })}
@@ -410,8 +412,8 @@ export function LandingPage() {
               <button disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
                 {isSubmitting ? "Отправка..." : "Получить смету"}
               </button>
-              {submitError ? <p className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
-              {submitMessage ? <p className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
+              {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
+              {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
             </form>
           </div>
         </section>
@@ -423,10 +425,10 @@ export function LandingPage() {
               Телефон: 8-495-229-44-22
             </a>
             <div className="grid grid-cols-2 gap-3">
-              <a href="#" className="cta-btn text-center">
+              <a href="https://wa.me/74952294422" target="_blank" rel="noreferrer" className="cta-btn text-center">
                 WhatsApp
               </a>
-              <a href="#" className="cta-btn text-center">
+              <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="cta-btn text-center">
                 Telegram
               </a>
             </div>

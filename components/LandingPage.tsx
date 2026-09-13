@@ -323,8 +323,8 @@ export function LandingPage() {
             {Array.from({ length: 6 }, (_, i) => i + 1).map((caseIndex) => (
               <article key={caseIndex} className="rounded-2xl border border-[#1c1c1c1f] bg-white p-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div role="img" aria-label="Фото объекта до ремонта" className="photo-placeholder min-h-[120px] text-sm">До</div>
-                  <div role="img" aria-label="Фото объекта после ремонта" className="photo-placeholder min-h-[120px] text-sm">После</div>
+                  <div className="photo-placeholder min-h-[120px] text-sm">До</div>
+                  <div className="photo-placeholder min-h-[120px] text-sm">После</div>
                 </div>
                 {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
                 <p className="mt-3 text-sm text-[#1c1c1ccc]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
@@ -445,7 +445,7 @@ export function LandingPage() {
 
       <footer className="border-t border-[#1c1c1c1a] bg-[#F7F5F0] py-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#1c1c1ca8] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} ЕНА ГРУПП</p>
+          <p>© 2026 ЕНА ГРУПП</p>
           <a href="/privacy">Политика конфиденциальности</a>
           <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>
         </div>

@@ -68,6 +68,8 @@ const quizItems = [
   "Ваши приоритеты по бюджету и материалам",
 ];
 
+const MAX_CONTACT_URL = "https://max.ru/ena_group";
+
 const faqItems = [
   {
     question: "Почему смета может вырасти?",
@@ -225,7 +227,7 @@ export function LandingPage() {
               Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
               </p>
               <p className="mt-4 inline-flex rounded-full border border-[#ffcd75]/30 bg-[#ffcd75]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#ffe3a8]">
-               ⏳ Осталось 5 мест на этот месяц
+               ⏳ Промо-квота: «Осталось 5 мест на этот месяц»
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
@@ -522,7 +524,7 @@ export function LandingPage() {
               Телефон: 8-495-229-44-22
             </a>
             <div className="grid grid-cols-2 gap-3">
-              <a href="https://max.ru" target="_blank" rel="noreferrer" className="cta-btn text-center">
+              <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" className="cta-btn text-center">
                 MAX
               </a>
               <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="cta-btn text-center">

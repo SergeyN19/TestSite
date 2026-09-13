@@ -6,14 +6,19 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   margin: 0;
   padding: 0;
   min-height: 100%;
   background:
     radial-gradient(circle at top, rgba(6, 165, 184, 0.18), transparent 28%),
     linear-gradient(180deg, #041014 0%, #071a20 38%, #f3fbfc 38%, #eff7f8 100%);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 @layer components {

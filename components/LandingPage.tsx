@@ -226,7 +226,7 @@ export function LandingPage() {
               <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
               Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
               </p>
-              <p className="mt-4 inline-flex rounded-full border border-[#ffcd75]/30 bg-[#ffcd75]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#ffe3a8]">
+              <p className="mt-4 inline-flex rounded-full border border-[#ffd37d]/60 bg-[#ffe7b3] px-4 py-2 text-sm font-bold uppercase tracking-[0.12em] text-[#4d3300]">
                ⏳ Промо-квота: «Осталось 5 мест на этот месяц»
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -363,7 +363,7 @@ export function LandingPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {proofItems.map((item) => (
               <article key={item.title} className="glass-card p-5">
-                <p className="text-2xl">{item.icon}</p>
+                <p aria-hidden="true" className="text-2xl">{item.icon}</p>
                 <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
                 <p className="mt-1 text-sm text-[#446269]">{item.text}</p>
               </article>
@@ -417,8 +417,8 @@ export function LandingPage() {
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {processItems.map((item, index) => (
                   <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                   <p className="text-2xl">{item.icon}</p>
-                   <p className="mt-2 text-2xl font-black text-[#66e3ef]">{index + 1}</p>
+                   <p aria-hidden="true" className="text-2xl">{item.icon}</p>
+                   <p className="mt-2 text-2xl font-black text-[#66e3ef]"><span className="sr-only">Шаг </span>{index + 1}</p>
                   <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>

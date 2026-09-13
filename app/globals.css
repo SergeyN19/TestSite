@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@layer components {
+  .cta-btn {
+    @apply rounded-xl bg-[#FF5A1F] px-5 py-3 text-base font-bold text-white transition duration-200 hover:scale-[1.02] hover:bg-[#e54d17] active:scale-[0.99];
+  }
+
+  .photo-placeholder {
+    @apply flex items-center justify-center rounded-2xl border border-[#ffffff24] bg-gradient-to-br from-[#ff8a63] via-[#ff5a1f] to-[#7a2f1a] p-5 text-center font-semibold text-white;
+  }
+}

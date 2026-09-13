@@ -248,68 +248,68 @@ export function LandingPage() {
               <p className="mt-3 max-w-2xl text-sm text-[#c3e6ea] sm:text-base">
                 Соберите предварительную смету в современном калькуляторе и сразу получите понятный диапазон цены.
               </p>
-            <div className="mt-6 grid gap-6 lg:grid-cols-2">
+              <div className="mt-6 grid gap-6 lg:grid-cols-2">
                 <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Тип ремонта</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
-                    <button
-                      type="button"
-                      key={type}
-                      className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
-                        repairType === type
-                          ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
-                          : "border-white/10 bg-white/5 hover:bg-white/10"
-                      }`}
-                      onClick={() => setRepairType(type)}
-                    >
-                      {type}
-                    </button>
-                  ))}
-                </div>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
+                      <button
+                        type="button"
+                        key={type}
+                        className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
+                          repairType === type
+                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
+                            : "border-white/10 bg-white/5 hover:bg-white/10"
+                        }`}
+                        onClick={() => setRepairType(type)}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
 
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Площадь: {area} м²</p>
-                <input
-                  type="range"
-                  min={20}
-                  max={200}
-                  value={area}
-                  onChange={(e) => setArea(Number(e.target.value))}
-                  className="mt-3 w-full accent-[#06A5B8]"
-                />
-                <input
-                  type="number"
-                  min={20}
-                  max={200}
-                  value={area}
-                  onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                  className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
-                />
+                  <input
+                    type="range"
+                    min={20}
+                    max={200}
+                    value={area}
+                    onChange={(e) => setArea(Number(e.target.value))}
+                    className="mt-3 w-full accent-[#06A5B8]"
+                  />
+                  <input
+                    type="number"
+                    min={20}
+                    max={200}
+                    value={area}
+                    onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
+                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
+                  />
 
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
-                    <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
-                      <input
-                        type="checkbox"
-                        checked={options.includes(option)}
-                        onChange={() => toggleOption(option)}
-                        className="size-4 accent-[#06A5B8]"
-                      />
-                      {option}
-                    </label>
-                  ))}
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
+                      <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
+                        <input
+                          type="checkbox"
+                          checked={options.includes(option)}
+                          onChange={() => toggleOption(option)}
+                          className="size-4 accent-[#06A5B8]"
+                        />
+                        {option}
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
                 <div className="glass-card p-5 text-[#0c2025] sm:p-6">
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0b7b8f]">Ваша вилка стоимости</p>
-                <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
-                  {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
-                </p>
-                <p className="mt-3 text-sm text-[#32535b]">
-                  {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
-                </p>
+                  <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
+                    {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
+                  </p>
+                  <p className="mt-3 text-sm text-[#32535b]">
+                    {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
+                  </p>
                   <div className="mt-6 rounded-2xl border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
                     Точный расчёт подготовим после замера и закрепим его в смете до старта работ.
                   </div>
@@ -318,7 +318,6 @@ export function LandingPage() {
                   </button>
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </section>

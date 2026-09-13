@@ -431,7 +431,7 @@ export function LandingPage() {
             </div>
 
             <Link href="/portfolio" className="cta-btn mt-8 inline-flex">
-              Открыть страницу с примерами работ
+              Открыть полную страницу портфолио
             </Link>
           </div>
         </section>
@@ -606,7 +606,7 @@ export function LandingPage() {
                     aria-controls={`faq-answer-${index}`}
                   >
                     {item.question}
-                    <span className="text-[#0f7f8f]">{isOpen ? "−" : "+"}</span>
+                    <span aria-hidden="true" className="text-[#0f7f8f]">{isOpen ? "−" : "+"}</span>
                   </button>
                   {isOpen ? (
                     <p id={`faq-answer-${index}`} className="border-t border-[#ebf2f3] px-5 py-5 text-sm leading-6 text-[#546f75]">

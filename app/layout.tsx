@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] });
+const inter = localFont({
+  src: [
+    { path: "./fonts/inter-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/inter-latin-700-normal.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/inter-cyrillic-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/inter-cyrillic-700-normal.woff2", weight: "700", style: "normal" },
+  ],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "ЕНА ГРУПП — ремонт квартир в Москве и МО",

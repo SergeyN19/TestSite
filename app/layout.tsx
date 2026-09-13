@@ -12,6 +12,8 @@ const inter = localFont({
   display: "swap",
 });
 
+
+
 export const metadata: Metadata = {
   title: "ЕНА ГРУПП — ремонт квартир в Москве и МО",
   description:

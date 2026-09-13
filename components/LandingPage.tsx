@@ -174,12 +174,12 @@ export function LandingPage() {
   };
 
   return (
-    <div className="bg-[#F7F5F0] text-[#1C1C1C]">
-      <header className="sticky top-0 z-50 border-b border-[#1c1c1c1a] bg-[#F7F5F0]/95 backdrop-blur">
+    <div className="bg-transparent text-[#0d2026]">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#061217]/80 text-white backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <a href="https://ena-group.ru/" className="flex items-center gap-3" target="_blank" rel="noreferrer">
             {/* TODO: Заменить текстовый логотип на официальный логотип из ena-group.ru */}
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff5a1f] to-[#ff8c5f] text-sm font-black text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#06A5B8] via-[#18bfd0] to-[#0b7b8f] text-sm font-black text-white shadow-[0_18px_40px_rgba(6,165,184,0.35)]">
               Е
             </div>
             <span className="text-sm font-extrabold uppercase tracking-wide sm:text-base">ЕНА ГРУПП</span>
@@ -196,138 +196,194 @@ export function LandingPage() {
       </header>
 
       <main>
-        <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-20">
-          <div>
-            <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl md:text-5xl">
-              Ремонт квартир в Москве и МО. Пол и потолок — за 1 день.
-            </h1>
-            <p className="mt-4 text-base text-[#1c1c1ccc] sm:text-lg">
-              Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
-            </p>
-            <button type="button" className="cta-btn mt-6" onClick={() => scrollToId("calculator")}>
-              Рассчитать стоимость за 2 минуты
-            </button>
+        <section className="relative overflow-hidden bg-[#041014]">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
+            <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
+            <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />
           </div>
-          <div className="photo-placeholder min-h-[260px]">
-            {/* TODO: Заменить блок-заглушку на реальное фото объекта */}
-            Фото объекта
+          <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
+            <div className="text-white">
+              <span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
+                Современный ремонт с гарантией
+              </span>
+              <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
+              Ремонт квартир в Москве и МО. Пол и потолок — за 1 день.
+              </h1>
+              <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
+              Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
+                  Рассчитать стоимость за 2 минуты
+                </button>
+                <a
+                  href="tel:84952294422"
+                  className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                >
+                  Позвонить сейчас
+                </a>
+              </div>
+              <div className="mt-8 grid gap-3 sm:max-w-xl sm:grid-cols-3">
+                {proofItems.slice(0, 3).map((item) => (
+                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
+                    <p className="text-lg">{item.icon}</p>
+                    <p className="mt-2 text-sm font-semibold">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="dark-card min-h-[320px] p-4">
+              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] rounded-[24px] border-white/15 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.24),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_55%)]" />
+                <div className="relative z-10 grid w-full gap-3">
+                  <div className="ml-auto w-[58%] rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Смета</p>
+                    <p className="mt-2 text-lg font-bold">за 24 часа</p>
+                  </div>
+                  <div className="w-[65%] rounded-2xl border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Гарантия</p>
+                    <p className="mt-2 text-lg font-bold">10 лет</p>
+                  </div>
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Чистый монтаж</p>
+                      <p className="mt-2 text-sm font-semibold">Аккуратно и без пыли</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сроки</p>
+                      <p className="mt-2 text-sm font-semibold">Поэтапно и прозрачно</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="calculator" className="bg-[#1C1C1C] py-14 text-[#F7F5F0]">
+        <section id="calculator" className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Калькулятор стоимости</h2>
-            <div className="mt-6 grid gap-6 lg:grid-cols-2">
-              <div className="rounded-2xl bg-[#2a2a2a] p-5 sm:p-6">
-                <p className="text-sm font-semibold text-[#ffb79e]">Шаг 1. Тип ремонта</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
-                    <button
-                      type="button"
-                      key={type}
-                      className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
-                        repairType === type
-                          ? "border-[#FF5A1F] bg-[#FF5A1F] text-white"
-                          : "border-[#ffffff33] bg-[#ffffff0d] hover:bg-[#ffffff1a]"
-                      }`}
-                      onClick={() => setRepairType(type)}
-                    >
-                      {type}
-                    </button>
-                  ))}
+            <div className="dark-card p-6 sm:p-8">
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Калькулятор стоимости</h2>
+              <p className="mt-3 max-w-2xl text-sm text-[#c3e6ea] sm:text-base">
+                Соберите предварительную смету в современном калькуляторе и сразу получите понятный диапазон цены.
+              </p>
+              <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Тип ремонта</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
+                      <button
+                        type="button"
+                        key={type}
+                        className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
+                          repairType === type
+                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
+                            : "border-white/10 bg-white/5 hover:bg-white/10"
+                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
+                        onClick={() => setRepairType(type)}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Площадь: {area} м²</p>
+                  <input
+                    type="range"
+                    min={20}
+                    max={200}
+                    value={area}
+                    onChange={(e) => setArea(Number(e.target.value))}
+                    className="mt-3 w-full accent-[#06A5B8]"
+                  />
+                  <input
+                    type="number"
+                    min={20}
+                    max={200}
+                    value={area}
+                    onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
+                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  />
+
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
+                      <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
+                        <input
+                          type="checkbox"
+                          checked={options.includes(option)}
+                          onChange={() => toggleOption(option)}
+                          className="size-4 accent-[#06A5B8]"
+                        />
+                        {option}
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
-                <p className="mt-6 text-sm font-semibold text-[#ffb79e]">Шаг 2. Площадь: {area} м²</p>
-                <input
-                  type="range"
-                  min={20}
-                  max={200}
-                  value={area}
-                  onChange={(e) => setArea(Number(e.target.value))}
-                  className="mt-3 w-full accent-[#FF5A1F]"
-                />
-                <input
-                  type="number"
-                  min={20}
-                  max={200}
-                  value={area}
-                  onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                  className="mt-3 w-28 rounded-lg border border-[#ffffff33] bg-[#ffffff0d] px-3 py-2 text-sm"
-                />
-
-                <p className="mt-6 text-sm font-semibold text-[#ffb79e]">Шаг 3. Дополнительные опции</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
-                    <label key={option} className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#ffffff26] p-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={options.includes(option)}
-                        onChange={() => toggleOption(option)}
-                        className="size-4 accent-[#FF5A1F]"
-                      />
-                      {option}
-                    </label>
-                  ))}
+                <div className="glass-card p-5 text-[#0c2025] sm:p-6">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0b7b8f]">Ваша вилка стоимости</p>
+                  <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
+                    {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
+                  </p>
+                  <p className="mt-3 text-sm text-[#32535b]">
+                    {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
+                  </p>
+                  <div className="mt-6 rounded-2xl border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
+                    Точный расчёт подготовим после замера и закрепим его в смете до старта работ.
+                  </div>
+                  <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
+                    Получить точную смету
+                  </button>
                 </div>
-              </div>
-
-              <div className="rounded-2xl bg-[#F7F5F0] p-5 text-[#1C1C1C] sm:p-6">
-                <p className="text-sm font-semibold text-[#b5441a]">Ваша вилка стоимости</p>
-                <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
-                  {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
-                </p>
-                <p className="mt-3 text-sm text-[#1c1c1ccc]">
-                  {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
-                </p>
-                <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
-                  Получить точную смету
-                </button>
               </div>
             </div>
           </div>
         </section>
 
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">Факты вместо обещаний</h2>
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Факты вместо обещаний</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {proofItems.map((item) => (
-              <article key={item.title} className="rounded-2xl border border-[#1c1c1c1f] bg-white p-5">
+              <article key={item.title} className="glass-card p-5">
                 <p className="text-2xl">{item.icon}</p>
                 <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                <p className="mt-1 text-sm text-[#1c1c1ccc]">{item.text}</p>
+                <p className="mt-1 text-sm text-[#446269]">{item.text}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="bg-[#1C1C1C] py-14 text-[#F7F5F0]">
+        <section className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Услуги</h2>
+            <div className="dark-card p-6 sm:p-8">
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Услуги</h2>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {serviceItems.map((item) => (
-                <article key={item.title} className="rounded-2xl border border-[#ffffff29] bg-[#ffffff08] p-5">
+                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                   <h3 className="text-xl font-bold">{item.title}</h3>
-                  <p className="mt-2 text-sm text-[#f7f5f0cc]">{item.text}</p>
+                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
                     Узнать цену
                   </button>
                 </article>
               ))}
             </div>
+            </div>
           </div>
         </section>
 
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">Портфолио</h2>
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Портфолио</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {Array.from({ length: 6 }, (_, i) => i + 1).map((caseIndex) => (
-              <article key={caseIndex} className="rounded-2xl border border-[#1c1c1c1f] bg-white p-4">
+              <article key={caseIndex} className="glass-card p-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="photo-placeholder min-h-[120px] text-sm">До</div>
                   <div className="photo-placeholder min-h-[120px] text-sm">После</div>
                 </div>
                 {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
-                <p className="mt-3 text-sm text-[#1c1c1ccc]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
+                <p className="mt-3 text-sm text-[#446269]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
               </article>
             ))}
           </div>
@@ -336,29 +392,31 @@ export function LandingPage() {
           </a>
         </section>
 
-        <section className="bg-[#1C1C1C] py-14 text-[#F7F5F0]">
+        <section className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Как проходит работа</h2>
+            <div className="dark-card p-6 sm:p-8">
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Как проходит работа</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {processItems.map((item, index) => (
-                <article key={item.title} className="rounded-2xl border border-[#ffffff29] bg-[#ffffff08] p-5">
-                  <p className="text-2xl font-black text-[#FF5A1F]">{index + 1}</p>
+                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                    <p className="text-2xl font-black text-[#66e3ef]">{index + 1}</p>
                   <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                  <p className="mt-2 text-sm text-[#f7f5f0cc]">{item.text}</p>
+                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
                   <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
                 </article>
               ))}
+            </div>
             </div>
           </div>
         </section>
 
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">FAQ</h2>
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">FAQ</h2>
           <div className="mt-6 space-y-3">
             {faqItems.map((item, index) => {
               const isOpen = openFaq === index;
               return (
-                <article key={item.question} className="overflow-hidden rounded-2xl border border-[#1c1c1c26] bg-white">
+                <article key={item.question} className="glass-card overflow-hidden">
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left text-base font-bold sm:px-5"
@@ -367,23 +425,24 @@ export function LandingPage() {
                     aria-controls={`faq-answer-${index}`}
                   >
                     {item.question}
-                    <span className="text-[#FF5A1F]">{isOpen ? "−" : "+"}</span>
+                    <span className="text-[#06A5B8]">{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#1c1c1c14] px-4 py-4 text-sm text-[#1c1c1ccc] sm:px-5">{item.answer}</p> : null}
+                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">{item.answer}</p> : null}
                 </article>
               );
             })}
           </div>
         </section>
 
-        <section id="lead-form" className="bg-[#1C1C1C] py-14 text-[#F7F5F0]">
+        <section id="lead-form" className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире</h2>
-            <form onSubmit={handleSubmit} className="mt-6 grid gap-3 rounded-2xl bg-[#2a2a2a] p-5 sm:max-w-xl sm:p-6">
+            <div className="dark-card p-6 sm:p-8">
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире</h2>
+              <form onSubmit={handleSubmit} className="mt-6 grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-5 sm:max-w-xl sm:p-6">
               <label className="text-sm">
                 Имя
                 <input
-                  className="mt-1 w-full rounded-lg border border-[#ffffff2e] bg-[#ffffff0f] px-3 py-2 text-base"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -391,7 +450,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Телефон
                 <input
-                  className="mt-1 w-full rounded-lg border border-[#ffffff2e] bg-[#ffffff0f] px-3 py-2 text-base"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   placeholder="+79991234567"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -400,7 +459,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Что нужно отремонтировать
                 <select
-                  className="mt-1 w-full rounded-lg border border-[#ffffff2e] bg-[#2a2a2a] px-3 py-2 text-base"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   value={service}
                   onChange={(e) => setService(e.target.value as RepairType | "Другое")}
                 >
@@ -417,13 +476,14 @@ export function LandingPage() {
               {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
               {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
             </form>
+            </div>
           </div>
         </section>
 
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">Контакты</h2>
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Контакты</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <a href="tel:84952294422" className="rounded-2xl border border-[#1c1c1c1f] bg-white p-4 font-bold">
+            <a href="tel:84952294422" className="glass-card p-4 font-bold">
               Телефон: 8-495-229-44-22
             </a>
             <div className="grid grid-cols-2 gap-3">
@@ -434,7 +494,7 @@ export function LandingPage() {
                 Telegram
               </a>
             </div>
-            <p className="rounded-2xl border border-[#1c1c1c1f] bg-white p-4 text-sm sm:col-span-2">
+            <p className="glass-card p-4 text-sm sm:col-span-2">
               Адрес: г. Москва, Анадырский пр-д, д.21
               <br />
               Работаем в Москве и Подмосковье
@@ -443,8 +503,8 @@ export function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-[#1c1c1c1a] bg-[#F7F5F0] py-6">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#1c1c1ca8] sm:flex-row sm:items-center sm:justify-between">
+      <footer className="border-t border-[#dcecef] bg-[#edf7f8] py-6">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 ЕНА ГРУПП</p>
           <a href="/privacy">Политика конфиденциальности</a>
           <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>

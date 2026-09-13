@@ -331,10 +331,9 @@ export function LandingPage() {
               </article>
             ))}
           </div>
-          <a href="/#portfolio-placeholder" className="cta-btn mt-6 inline-block">
+          <a href="/portfolio" className="cta-btn mt-6 inline-block">
             Смотреть все работы
           </a>
-          <span id="portfolio-placeholder" className="sr-only">Раздел-заглушка для полного портфолио</span>
         </section>
 
         <section className="bg-[#1C1C1C] py-14 text-[#F7F5F0]">
@@ -447,9 +446,8 @@ export function LandingPage() {
       <footer className="border-t border-[#1c1c1c1a] bg-[#F7F5F0] py-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#1c1c1ca8] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} ЕНА ГРУПП</p>
-          <a href="/#privacy-policy-placeholder">Политика конфиденциальности</a>
+          <a href="/privacy">Политика конфиденциальности</a>
           <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>
-          <span id="privacy-policy-placeholder" className="sr-only">Заглушка страницы политики конфиденциальности</span>
         </div>
       </footer>
     </div>

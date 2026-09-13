@@ -25,9 +25,8 @@ export async function POST(request: Request) {
   }
 
   console.log("[lead] Заглушка отправки в Битрикс24", {
-    name,
-    phone: `${phone.slice(0, 2)}***${phone.slice(-2)}`,
     service,
+    receivedAt: new Date().toISOString(),
   });
 
   return NextResponse.json({ success: true });

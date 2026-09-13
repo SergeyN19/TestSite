@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 
 type RepairType = "Косметический" | "Капитальный" | "Дизайнерский" | "Только пол и потолок";
@@ -276,9 +277,9 @@ export function LandingPage() {
 
           <nav className="hidden items-center gap-5 text-sm font-semibold text-[#45636a] lg:flex">
             {navItems.map((item) => (
-              <button key={item.id} type="button" onClick={() => scrollToId(item.id)} className="transition hover:text-[#0f7f8f]">
+              <a key={item.id} href={`#${item.id}`} className="transition hover:text-[#0f7f8f]">
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -348,9 +349,9 @@ export function LandingPage() {
                   <p className="mt-2 text-lg font-bold text-[#10262c]">Калькулятор + кейсы сразу под рукой</p>
                 </div>
               </div>
-              <button type="button" className="cta-btn w-full" onClick={() => scrollToId("lead-form")}>
+              <a href="#lead-form" className="cta-btn w-full">
                 Получить смету за 24 часа
-              </button>
+              </a>
             </aside>
           </div>
         </section>
@@ -372,9 +373,9 @@ export function LandingPage() {
                 <h3 className="text-2xl font-bold text-[#10262c]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#516d73] sm:text-base">{item.text}</p>
                 <p className="mt-4 border-t border-[#e4eff1] pt-4 text-sm font-semibold text-[#0f7f8f]">{item.result}</p>
-                <button type="button" className="secondary-btn mt-6" onClick={() => scrollToId("calculator")}>
+                <a href="#calculator" className="secondary-btn mt-6">
                   Рассчитать формат
-                </button>
+                </a>
               </article>
             ))}
           </div>
@@ -429,9 +430,9 @@ export function LandingPage() {
               ))}
             </div>
 
-            <a href="/portfolio" className="cta-btn mt-8 inline-flex">
+            <Link href="/portfolio" className="cta-btn mt-8 inline-flex">
               Смотреть все направления работ
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -705,7 +706,7 @@ export function LandingPage() {
       <footer className="border-t border-[#dcecef] bg-[#edf7f8] py-6">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 ЕНА ГРУПП</p>
-          <a href="/privacy">Политика конфиденциальности</a>
+          <Link href="/privacy">Политика конфиденциальности</Link>
           <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>
         </div>
       </footer>

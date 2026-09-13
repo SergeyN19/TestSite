@@ -218,7 +218,7 @@ export function LandingPage() {
                 </button>
                 <a
                   href="tel:84952294422"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15"
+                  className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                 >
                   Позвонить сейчас
                 </a>
@@ -260,7 +260,7 @@ export function LandingPage() {
                           repairType === type
                             ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
                             : "border-white/10 bg-white/5 hover:bg-white/10"
-                        }`}
+                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
                         onClick={() => setRepairType(type)}
                       >
                         {type}
@@ -283,7 +283,7 @@ export function LandingPage() {
                     max={200}
                     value={area}
                     onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
+                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   />
 
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
@@ -423,7 +423,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Имя
                 <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -431,7 +431,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Телефон
                 <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   placeholder="+79991234567"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -440,7 +440,7 @@ export function LandingPage() {
               <label className="text-sm">
                 Что нужно отремонтировать
                 <select
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white"
+                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   value={service}
                   onChange={(e) => setService(e.target.value as RepairType | "Другое")}
                 >

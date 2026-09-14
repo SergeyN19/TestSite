@@ -2,131 +2,212 @@
 
 import { FormEvent, useMemo, useState } from "react";
 
-type RepairType = "Косметический" | "Капитальный" | "Дизайнерский" | "Только пол и потолок";
+type TriggerType = "По нажатию" | "По событию" | "По расписанию";
+type RequestType =
+  | "Безопасность дома"
+  | "Освещение и сценарии"
+  | "Климат и энергоэффективность"
+  | "Видеонаблюдение и доступ"
+  | "Нужна консультация"
+  | "Другое";
 
-type ExtraOption = "Натяжные потолки" | "Замена пола" | "Электрика" | "Санузел" | "Кухня";
+const LOGO_URL =
+  "https://github.com/user-attachments/assets/615df21e-3100-4ae5-818f-234573de224a";
+const CONTACT_PHONE = "+7-915-252-74-07";
+const CONTACT_PHONE_DISPLAY = "+7-915-252-74-07";
+const CONTACT_NAME = "Сергей Жулидов";
 
-const REPAIR_RATES: Record<RepairType, { min: number; max: number }> = {
-  "Косметический": { min: 6000, max: 9000 },
-  "Капитальный": { min: 12000, max: 18000 },
-  "Дизайнерский": { min: 20000, max: 30000 },
-  "Только пол и потолок": { min: 3500, max: 5000 },
-};
-
-const OPTION_RATES: Record<ExtraOption, number> = {
-  "Натяжные потолки": 800,
-  "Замена пола": 1200,
-  "Электрика": 1500,
-  "Санузел": 2000,
-  "Кухня": 1800,
-};
-
-const proofItems = [
-  { icon: "🛡️", title: "10 лет гарантии", text: "В договоре. С перечнем работ." },
-  { icon: "🏠", title: "400+ объектов", text: "Портфолио с фото до/после." },
-  { icon: "📈", title: "97% возвращаются", text: "По данным Отзовика." },
-  { icon: "📋", title: "Смета до начала работ", text: "Фиксируем. Без доплат сверх." },
-];
-
-const serviceItems = [
-  { title: "Пол и потолок за 1 день", text: "Точный расчёт и закрытие работ в течение дня." },
-  { title: "Натяжные потолки за 3 часа", text: "Чистый монтаж без пыли и долгих простоев." },
-  { title: "Ремонт кухни под ключ", text: "От демонтажа до финальной установки техники." },
-  { title: "Ремонт ванной и санузла", text: "Гидроизоляция, плитка, сантехника с гарантией." },
-  { title: "Косметический ремонт", text: "Быстрое обновление квартиры без перепланировки." },
-  { title: "Капитальный ремонт", text: "Полная замена инженерии и отделки по этапам." },
-];
-
-const processItems = [
+const concernGroups = [
   {
-    title: "Замерщик приезжает",
-    text: "Бесплатно, в удобное время. 1 день.",
+    title: "Начать нужно со своих страхов",
+    subtitle: "Понимаем, какие риски система должна закрыть в первую очередь.",
+    items: [
+      "Пожар, взрыв газа и протечки",
+      "Проникновение в дом и контроль доступа",
+      "Безопасность детей и пожилых родственников",
+    ],
   },
   {
-    title: "Смета за 24 часа",
-    text: "Фиксированная, по позициям.",
+    title: "Что раздражает в быту",
+    subtitle: "Находим повторяющиеся неудобства и превращаем их в автоматизации.",
+    items: [
+      "Приехали на дачу — внутри холодно",
+      "Нужно выходить из машины, чтобы открыть ворота",
+      "Приходится помнить о рутинных действиях самому",
+    ],
   },
   {
-    title: "Ремонт по этапам",
-    text: "Вы платите за принятый этап.",
-  },
-  {
-    title: "Сдача и гарантия",
-    text: "Уборка + акт + 10 лет гарантии.",
+    title: "Ваш личный ритм жизни",
+    subtitle: "Подстраиваем сценарии под привычки, комфорт и расход энергии.",
+    items: [
+      "Тепловые режимы для разных комнат",
+      "Когда и где вы проводите время дома",
+      "Как используются свет, техника и инженерные системы",
+    ],
   },
 ];
+
+const benefits = [
+  { icon: "🛡️", title: "Безопасность", text: "Протечки, газ, вторжение, тревожные сценарии и уведомления." },
+  { icon: "💡", title: "Комфорт", text: "Свет, шторы, ворота, климат и бытовые сцены запускаются сами." },
+  { icon: "📉", title: "Экономия", text: "Отопление и приборы переходят в нужный режим, когда никого нет дома." },
+  { icon: "📲", title: "Простое управление", text: "Телефон, Telegram, Алиса, панели на стене и планшет." },
+];
+
+const triggerTypes: { title: TriggerType; text: string }[] = [
+  {
+    title: "По нажатию",
+    text: "Сценарий стартует по голосовой команде, кнопке в приложении, мастер-клавише или панели.",
+  },
+  {
+    title: "По событию",
+    text: "Система реагирует на условия: закрылась дверь, включилась охрана, сработал датчик, приехала машина.",
+  },
+  {
+    title: "По расписанию",
+    text: "Автоматизации запускаются в конкретный день и час, например по будням утром или перед приездом на дачу.",
+  },
+];
+
+const scenarioItems: Array<{
+  title: string;
+  trigger: TriggerType;
+  text: string;
+  bullets: string[];
+}> = [
+  {
+    title: "Я вернулась",
+    trigger: "По событию",
+    text: "Дом встречает хозяев без лишних действий.",
+    bullets: ["Открываются ворота", "Включается свет на фасаде и участке", "Подсвечиваются гараж и прихожая"],
+  },
+  {
+    title: "Уезжаю",
+    trigger: "По событию",
+    text: "Дом сам переходит в защищённый и экономный режим.",
+    bullets: ["Ставит дом на охрану", "Перекрывает воду", "Переводит отопление в энергосбережение"],
+  },
+  {
+    title: "Все ушли",
+    trigger: "По событию",
+    text: "Освещение и подключённые приборы выключаются, когда дома никого нет.",
+    bullets: ["Отключает свет", "Выключает электроприборы", "Может запускаться по геолокации или двери"],
+  },
+  {
+    title: "Гости",
+    trigger: "По нажатию",
+    text: "Быстрый переход дома в режим приёма гостей.",
+    bullets: ["Музыка или нейтральный телеканал", "Камеры переходят на запись", "Вентиляция и кондиционирование усиливаются"],
+  },
+  {
+    title: "Отпуск",
+    trigger: "По нажатию",
+    text: "Дом остаётся под контролем даже во время длительного отсутствия.",
+    bullets: ["Экономит отопление", "Имитирует присутствие светом", "Отправляет оповещения в Telegram"],
+  },
+  {
+    title: "Завтрак / Обед / Ужин",
+    trigger: "По расписанию",
+    text: "Световые сценарии под время суток и ваши привычки.",
+    bullets: ["Утром больше мягкого света", "Днём учитывается естественное освещение", "Вечером добавляется уютная подсветка"],
+  },
+  {
+    title: "Кино",
+    trigger: "По нажатию",
+    text: "Один голосовой запрос — и комната готова к просмотру.",
+    bullets: ["Закрываются шторы", "Свет остаётся на минимальной яркости", "После выключения сцены освещение возвращается"],
+  },
+  {
+    title: "Будильник",
+    trigger: "По расписанию",
+    text: "Утро начинается мягко и без резкого света.",
+    bullets: ["Открываются шторы", "Сценарий настраивается по комнате", "Можно запускать голосом или с панели"],
+  },
+];
+
+const automationCards = [
+  {
+    title: "Тёмная комната",
+    text: "Освещение в санузлах учитывает движение и положение двери, поэтому свет включается вовремя и не горит лишнего.",
+  },
+  {
+    title: "Дневной и ночной режим",
+    text: "Ночью подсветка включается мягко и не слепит, а днём работает на полной яркости там, где это нужно.",
+  },
+  {
+    title: "Автоматический свет",
+    text: "Прихожая, коридоры, гардеробные, кладовые и техпомещения сами включают подходящий уровень освещения.",
+  },
+  {
+    title: "Микроклимат по датчикам",
+    text: "Контроль CO₂, влажности и температуры через отопление, вентиляцию, кондиционирование и увлажнение.",
+  },
+  {
+    title: "Навигатор, открой ворота",
+    text: "Команда из Яндекс Навигатора передаётся через Яндекс Станцию на реле и открывает ворота без выхода из машины.",
+  },
+  {
+    title: "Тревога при проникновении",
+    text: "Кнопки тревоги, запись с камер, мигание света, сообщения родственникам и блокировка электронных замков.",
+  },
+];
+
+const controlMethods = ["Телефон", "Каналы в Telegram", "Алиса", "Панели на стене", "Планшет", "Ноутбук"];
 
 const faqItems = [
   {
-    question: "Почему смета может вырасти?",
+    question: "С чего начать внедрение умного дома?",
     answer:
-      "Только если вы меняете объём работ после согласования или вскрываются скрытые дефекты, которые нельзя было увидеть до демонтажа. Все изменения оформляем допсметой до начала нового этапа.",
+      "С тех сценариев, которые закрывают ваши риски и дискомфорт: безопасность, доступ, климат, автоматический свет или управление воротами. Сначала определяем задачи, потом подбираем оснащение дома под них.",
   },
   {
-    question: "Есть ли скрытые доплаты за вывоз мусора и подъём?",
+    question: "Все сценарии нужно запускать вручную?",
     answer:
-      "Нет. В смету заранее вносим вывоз мусора, подъём материалов и расходники. Отдельных платежей после старта работ не добавляем без вашего согласования.",
+      "Нет. Разумная изба поддерживает запуск по нажатию, по событию и по расписанию. Самые удобные автоматизации работают сами и не требуют открывать приложение каждый раз.",
   },
   {
-    question: "Можно ли платить по этапам?",
+    question: "Можно ли настроить сценарии под конкретную семью?",
     answer:
-      "Да. Оплата разбивается на этапы: демонтаж, черновые работы, чистовая отделка и сдача. Переход к следующему этапу только после приёмки предыдущего.",
+      "Да. Например, отдельный сценарий «Выключить всё» для ребёнка, ночной режим для санузлов, мягкий свет для детской или разные климатические режимы по комнатам.",
   },
   {
-    question: "Что если бригада затянет сроки?",
+    question: "Какими устройствами можно управлять?",
     answer:
-      "Сроки фиксируем в договоре и календарном плане. При отклонениях заранее уведомляем и пересогласовываем график, чтобы вы понимали причину и новые даты.",
+      "Освещением, шторами, воротами, отоплением, вентиляцией, кондиционированием, розетками, охранными датчиками, электронными замками и камерами видеонаблюдения — в зависимости от оснащения дома.",
   },
   {
-    question: "Гарантия на работы — где прописана?",
+    question: "Как управлять системой каждый день?",
     answer:
-      "Гарантия 10 лет прописывается в договоре и акте сдачи с перечнем выполненных работ. Документы передаём в день финальной приёмки.",
+      "Через телефон, Telegram, Алису, настенные панели, планшет или ноутбук. Способ управления подбирается под ваш сценарий использования.",
   },
 ];
 
-const numberFormatter = new Intl.NumberFormat("ru-RU");
+const requestTypes: RequestType[] = [
+  "Безопасность дома",
+  "Освещение и сценарии",
+  "Климат и энергоэффективность",
+  "Видеонаблюдение и доступ",
+  "Нужна консультация",
+  "Другое",
+];
 
 export function LandingPage() {
-  const [repairType, setRepairType] = useState<RepairType>("Косметический");
-  const [area, setArea] = useState(45);
-  const [options, setOptions] = useState<ExtraOption[]>([]);
+  const [activeTrigger, setActiveTrigger] = useState<TriggerType>("По событию");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [service, setService] = useState<RepairType | "Другое">("Косметический");
+  const [service, setService] = useState<RequestType>("Нужна консультация");
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const calculation = useMemo(() => {
-    const base = REPAIR_RATES[repairType];
-    const extraRate = options.reduce((sum, option) => sum + OPTION_RATES[option], 0);
-
-    const minPerM2 = base.min + extraRate;
-    const maxPerM2 = base.max + extraRate;
-
-    return {
-      minPerM2,
-      maxPerM2,
-      minTotal: minPerM2 * area,
-      maxTotal: maxPerM2 * area,
-    };
-  }, [area, options, repairType]);
-
-  const toggleOption = (option: ExtraOption) => {
-    setOptions((prev) =>
-      prev.includes(option) ? prev.filter((currentOption) => currentOption !== option) : [...prev, option],
-    );
-  };
+  const visibleScenarios = useMemo(
+    () => scenarioItems.filter((item) => item.trigger === activeTrigger),
+    [activeTrigger],
+  );
 
   const scrollToId = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const handleTransferToForm = () => {
-    setService(repairType);
-    scrollToId("lead-form");
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -162,10 +243,10 @@ export function LandingPage() {
         throw new Error("Ошибка отправки");
       }
 
-      setSubmitMessage("Спасибо! Перезвоним в течение 15 минут");
+      setSubmitMessage("Спасибо! Свяжемся с вами и подберём сценарии для дома.");
       setName("");
       setPhone("");
-      setService("Косметический");
+      setService("Нужна консультация");
     } catch {
       setSubmitError("Не удалось отправить заявку. Попробуйте ещё раз.");
     } finally {
@@ -177,82 +258,92 @@ export function LandingPage() {
     <div className="bg-transparent text-[#0d2026]">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#061217]/80 text-white backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <a href="https://ena-group.ru/" className="flex items-center gap-3" target="_blank" rel="noreferrer">
-            {/* TODO: Заменить текстовый логотип на официальный логотип из ena-group.ru */}
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#06A5B8] via-[#18bfd0] to-[#0b7b8f] text-sm font-black text-white shadow-[0_18px_40px_rgba(6,165,184,0.35)]">
-              Е
+          <button type="button" className="flex items-center gap-3 text-left" onClick={() => scrollToId("top")}>
+            <div
+              className="h-12 w-28 rounded-2xl border border-white/10 bg-contain bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${LOGO_URL})` }}
+              aria-hidden="true"
+            />
+            <div>
+              <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[#8fe8f0]">Умный дом</p>
+              <p className="text-xs text-white/70">Разумная изба</p>
             </div>
-            <span className="text-sm font-extrabold uppercase tracking-wide sm:text-base">ЕНА ГРУПП</span>
-          </a>
+          </button>
           <div className="flex items-center gap-2 sm:gap-3">
-            <a className="hidden text-sm font-bold sm:block" href="tel:84952294422">
-              8-495-229-44-22
+            <a className="hidden text-sm font-bold sm:block" href={`tel:${CONTACT_PHONE}`}>
+              {CONTACT_PHONE_DISPLAY}
             </a>
-            <a href="tel:84952294422" className="cta-btn text-sm">
+            <a href={`tel:${CONTACT_PHONE}`} className="cta-btn text-sm">
               Позвонить
             </a>
           </div>
         </div>
       </header>
 
-      <main>
+      <main id="top">
         <section className="relative overflow-hidden bg-[#041014]">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
-            <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
-            <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />
+            <div className="absolute left-[6%] top-10 h-44 w-44 rounded-full bg-[#06A5B8]/25 blur-3xl" />
+            <div className="absolute right-[8%] top-24 h-56 w-56 rounded-full bg-[#41d9e4]/20 blur-3xl" />
           </div>
-          <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
+          <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-[1.1fr_0.9fr] md:items-center md:py-24">
             <div className="text-white">
               <span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
-                Современный ремонт с гарантией
+                Умный дом — просто!
               </span>
-              <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
-              Ремонт квартир в Москве и МО. Пол и потолок — за 1 день.
+              <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
+                Разумная изба автоматизирует безопасность, климат и бытовые сценарии вашего дома.
               </h1>
-              <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
-              Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
+              <p className="mt-4 max-w-2xl text-base text-[#d6eef1] sm:text-lg">
+                Подбираем систему умного дома от ваших реальных задач: защита от протечек и вторжений, управление
+                воротами, мягкий ночной свет, микроклимат и экономия энергии.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
-                  Рассчитать стоимость за 2 минуты
+                <button type="button" className="cta-btn" onClick={() => scrollToId("lead-form")}>
+                  Получить консультацию
                 </button>
-                <a
-                  href="tel:84952294422"
+                <button
+                  type="button"
                   className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  onClick={() => scrollToId("scenarios")}
                 >
-                  Позвонить сейчас
-                </a>
+                  Посмотреть сценарии
+                </button>
               </div>
-              <div className="mt-8 grid gap-3 sm:max-w-xl sm:grid-cols-3">
-                {proofItems.slice(0, 3).map((item) => (
+              <div className="mt-8 grid gap-3 sm:max-w-3xl sm:grid-cols-2 xl:grid-cols-4">
+                {benefits.map((item) => (
                   <div key={item.title} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
                     <p className="text-lg">{item.icon}</p>
                     <p className="mt-2 text-sm font-semibold">{item.title}</p>
+                    <p className="mt-1 text-sm text-[#d6eef1]">{item.text}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="dark-card min-h-[320px] p-4">
-              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] rounded-[24px] border-white/15 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.24),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_55%)]" />
-                <div className="relative z-10 grid w-full gap-3">
-                  <div className="ml-auto w-[58%] rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Смета</p>
-                    <p className="mt-2 text-lg font-bold">за 24 часа</p>
+
+            <div className="dark-card p-4 sm:p-5">
+              <div className="overflow-hidden rounded-[24px] border border-white/15 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]">
+                <div
+                  className="min-h-[220px] bg-contain bg-center bg-no-repeat"
+                  style={{ backgroundImage: `url(${LOGO_URL})` }}
+                  role="img"
+                  aria-label="Логотип Разумная изба"
+                />
+                <div className="grid gap-3 border-t border-white/10 p-5 text-white sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сценарии</p>
+                    <p className="mt-2 text-sm font-semibold">По нажатию, событию и расписанию</p>
                   </div>
-                  <div className="w-[65%] rounded-2xl border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Гарантия</p>
-                    <p className="mt-2 text-lg font-bold">10 лет</p>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Управление</p>
+                    <p className="mt-2 text-sm font-semibold">Телефон, Telegram, Алиса, панели</p>
                   </div>
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Чистый монтаж</p>
-                      <p className="mt-2 text-sm font-semibold">Аккуратно и без пыли</p>
-                    </div>
-                    <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сроки</p>
-                      <p className="mt-2 text-sm font-semibold">Поэтапно и прозрачно</p>
-                    </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:col-span-2">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Контакт</p>
+                    <p className="mt-2 text-lg font-bold">{CONTACT_NAME}</p>
+                    <a href={`tel:${CONTACT_PHONE}`} className="mt-1 inline-block text-sm text-[#8fe8f0]">
+                      {CONTACT_PHONE_DISPLAY}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -260,153 +351,125 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section id="calculator" className="py-14 text-[#eff9fb]">
+        <section className="mx-auto w-full max-w-6xl px-4 py-14">
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">С чего начинается умный дом</h2>
+          <p className="mt-3 max-w-3xl text-base text-[#446269]">
+            Не с набора датчиков, а с ваших страхов, раздражающих мелочей и личных привычек. Интегратор предлагает
+            варианты, а вы выбираете те сценарии, которые действительно нужны дому и семье.
+          </p>
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {concernGroups.map((group) => (
+              <article key={group.title} className="glass-card p-6">
+                <h3 className="text-2xl font-bold">{group.title}</h3>
+                <p className="mt-2 text-sm text-[#446269]">{group.subtitle}</p>
+                <ul className="mt-4 space-y-3 text-sm text-[#23414a]">
+                  {group.items.map((item) => (
+                    <li key={item} className="rounded-2xl bg-[#f1fbfc] px-4 py-3">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
             <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Калькулятор стоимости</h2>
-              <p className="mt-3 max-w-2xl text-sm text-[#c3e6ea] sm:text-base">
-                Соберите предварительную смету в современном калькуляторе и сразу получите понятный диапазон цены.
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Как запускаются сценарии</h2>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {triggerTypes.map((item) => (
+                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">{item.title}</p>
+                    <p className="mt-3 text-sm text-[#c3e6ea]">{item.text}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="mt-6 rounded-[24px] border border-white/10 bg-white/5 p-5 text-sm text-[#c3e6ea]">
+                Для каждого сценария можно задать длительность выполнения. После её окончания устройства возвращаются к
+                предыдущему состоянию.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="scenarios" className="mx-auto w-full max-w-6xl px-4 py-14">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Популярные сценарии</h2>
+              <p className="mt-3 max-w-3xl text-base text-[#446269]">
+                Ниже — только часть вариаций. Итоговый набор зависит от оснащения дома, привычек семьи и приоритетов по
+                безопасности и комфорту.
               </p>
-              <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Тип ремонта</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
-                      <button
-                        type="button"
-                        key={type}
-                        className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
-                          repairType === type
-                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
-                            : "border-white/10 bg-white/5 hover:bg-white/10"
-                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
-                        onClick={() => setRepairType(type)}
-                      >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
-
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Площадь: {area} м²</p>
-                  <input
-                    type="range"
-                    min={20}
-                    max={200}
-                    value={area}
-                    onChange={(e) => setArea(Number(e.target.value))}
-                    className="mt-3 w-full accent-[#06A5B8]"
-                  />
-                  <input
-                    type="number"
-                    min={20}
-                    max={200}
-                    value={area}
-                    onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  />
-
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
-                      <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
-                        <input
-                          type="checkbox"
-                          checked={options.includes(option)}
-                          onChange={() => toggleOption(option)}
-                          className="size-4 accent-[#06A5B8]"
-                        />
-                        {option}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-card p-5 text-[#0c2025] sm:p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0b7b8f]">Ваша вилка стоимости</p>
-                  <p className="mt-2 text-3xl font-extrabold sm:text-4xl">
-                    {numberFormatter.format(calculation.minTotal)} ₽ — {numberFormatter.format(calculation.maxTotal)} ₽
-                  </p>
-                  <p className="mt-3 text-sm text-[#32535b]">
-                    {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
-                  </p>
-                  <div className="mt-6 rounded-2xl border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
-                    Точный расчёт подготовим после замера и закрепим его в смете до старта работ.
-                  </div>
-                  <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
-                    Получить точную смету
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {triggerTypes.map((item) => {
+                const isActive = item.title === activeTrigger;
+                return (
+                  <button
+                    key={item.title}
+                    type="button"
+                    className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                      isActive
+                        ? "bg-[#06A5B8] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
+                        : "bg-white text-[#0d2026] shadow-[0_10px_20px_rgba(8,34,40,0.08)] hover:bg-[#e8f7f9]"
+                    }`}
+                    onClick={() => setActiveTrigger(item.title)}
+                  >
+                    {item.title}
                   </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {visibleScenarios.map((item) => (
+              <article key={item.title} className="glass-card p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-2xl font-bold">{item.title}</h3>
+                  <span className="rounded-full bg-[#e8f7f9] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#0b7b8f]">
+                    {item.trigger}
+                  </span>
                 </div>
+                <p className="mt-3 text-sm text-[#446269]">{item.text}</p>
+                <ul className="mt-4 space-y-2 text-sm text-[#23414a]">
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet} className="rounded-2xl bg-[#f1fbfc] px-4 py-3">
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="py-14 text-[#eff9fb]">
+          <div className="mx-auto w-full max-w-6xl px-4">
+            <div className="dark-card p-6 sm:p-8">
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Автоматизации для комфорта и безопасности</h2>
+              <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {automationCards.map((item) => (
+                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                    <h3 className="text-xl font-bold">{item.title}</h3>
+                    <p className="mt-3 text-sm text-[#c3e6ea]">{item.text}</p>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Факты вместо обещаний</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {proofItems.map((item) => (
-              <article key={item.title} className="glass-card p-5">
-                <p className="text-2xl">{item.icon}</p>
-                <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                <p className="mt-1 text-sm text-[#446269]">{item.text}</p>
+          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Способы управления</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {controlMethods.map((item) => (
+              <article key={item} className="glass-card flex min-h-[120px] items-center justify-center p-5 text-center text-lg font-bold">
+                {item}
               </article>
             ))}
-          </div>
-        </section>
-
-        <section className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Услуги</h2>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {serviceItems.map((item) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                  <h3 className="text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
-                    Узнать цену
-                  </button>
-                </article>
-              ))}
-            </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-6xl px-4 py-14">
-          <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Портфолио</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {Array.from({ length: 6 }, (_, i) => i + 1).map((caseIndex) => (
-              <article key={caseIndex} className="glass-card p-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="photo-placeholder min-h-[120px] text-sm">До</div>
-                  <div className="photo-placeholder min-h-[120px] text-sm">После</div>
-                </div>
-                {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
-                <p className="mt-3 text-sm text-[#446269]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
-              </article>
-            ))}
-          </div>
-          <a href="/portfolio" className="cta-btn mt-6 inline-block">
-            Смотреть все работы
-          </a>
-        </section>
-
-        <section className="py-14 text-[#eff9fb]">
-          <div className="mx-auto w-full max-w-6xl px-4">
-            <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Как проходит работа</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {processItems.map((item, index) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                    <p className="text-2xl font-black text-[#66e3ef]">{index + 1}</p>
-                  <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
-                </article>
-              ))}
-            </div>
-            </div>
           </div>
         </section>
 
@@ -427,7 +490,11 @@ export function LandingPage() {
                     {item.question}
                     <span className="text-[#06A5B8]">{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">{item.answer}</p> : null}
+                  {isOpen ? (
+                    <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">
+                      {item.answer}
+                    </p>
+                  ) : null}
                 </article>
               );
             })}
@@ -437,45 +504,61 @@ export function LandingPage() {
         <section id="lead-form" className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
             <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире</h2>
-              <form onSubmit={handleSubmit} className="mt-6 grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-5 sm:max-w-xl sm:p-6">
-              <label className="text-sm">
-                Имя
-                <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </label>
-              <label className="text-sm">
-                Телефон
-                <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  placeholder="+79991234567"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </label>
-              <label className="text-sm">
-                Что нужно отремонтировать
-                <select
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  value={service}
-                  onChange={(e) => setService(e.target.value as RepairType | "Другое")}
-                >
-                  <option>Косметический</option>
-                  <option>Капитальный</option>
-                  <option>Дизайнерский</option>
-                  <option>Только пол и потолок</option>
-                  <option>Другое</option>
-                </select>
-              </label>
-              <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
-                {isSubmitting ? "Отправка..." : "Получить смету"}
-              </button>
-              {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
-              {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
-            </form>
+              <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+                <div>
+                  <h2 className="text-3xl font-extrabold sm:text-4xl">Подберём сценарии именно под ваш дом</h2>
+                  <p className="mt-4 text-sm text-[#c3e6ea] sm:text-base">
+                    Расскажите, что для вас важнее: безопасность, автоматический свет, климат, контроль ворот,
+                    видеонаблюдение или удобное управление. Мы предложим подходящую конфигурацию системы.
+                  </p>
+                  <div className="mt-6 space-y-3 text-sm text-[#eff9fb]">
+                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                      <p className="font-semibold">Контактное лицо</p>
+                      <p className="mt-1 text-[#c3e6ea]">{CONTACT_NAME}</p>
+                    </div>
+                    <a href={`tel:${CONTACT_PHONE}`} className="block rounded-2xl border border-white/10 bg-white/5 p-4 font-semibold text-[#8fe8f0]">
+                      {CONTACT_PHONE_DISPLAY}
+                    </a>
+                  </div>
+                </div>
+
+                <form onSubmit={handleSubmit} className="grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-5 sm:p-6">
+                  <label className="text-sm">
+                    Имя
+                    <input
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </label>
+                  <label className="text-sm">
+                    Телефон
+                    <input
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                      placeholder="+79991234567"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </label>
+                  <label className="text-sm">
+                    Что хотите автоматизировать
+                    <select
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                      value={service}
+                      onChange={(e) => setService(e.target.value as RequestType)}
+                    >
+                      {requestTypes.map((item) => (
+                        <option key={item}>{item}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
+                    {isSubmitting ? "Отправка..." : "Получить консультацию"}
+                  </button>
+                  {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
+                  {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
+                </form>
+              </div>
             </div>
           </div>
         </section>
@@ -483,21 +566,16 @@ export function LandingPage() {
         <section className="mx-auto w-full max-w-6xl px-4 py-14">
           <h2 className="text-3xl font-extrabold text-[#0d2026] sm:text-4xl">Контакты</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <a href="tel:84952294422" className="glass-card p-4 font-bold">
-              Телефон: 8-495-229-44-22
+            <a href={`tel:${CONTACT_PHONE}`} className="glass-card p-4 font-bold">
+              Телефон: {CONTACT_PHONE_DISPLAY}
             </a>
-            <div className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/74952294422" target="_blank" rel="noreferrer" className="cta-btn text-center">
-                WhatsApp
-              </a>
-              <a href="https://t.me/ena_group" target="_blank" rel="noreferrer" className="cta-btn text-center">
-                Telegram
-              </a>
+            <div className="glass-card p-4">
+              <p className="font-bold">Контактное лицо</p>
+              <p className="mt-1 text-sm text-[#446269]">{CONTACT_NAME}</p>
             </div>
             <p className="glass-card p-4 text-sm sm:col-span-2">
-              Адрес: г. Москва, Анадырский пр-д, д.21
-              <br />
-              Работаем в Москве и Подмосковье
+              Разумная изба помогает собрать умный дом вокруг реальных жизненных сценариев: от контроля доступа и
+              протечек до климата, света, ворот и уведомлений.
             </p>
           </div>
         </section>
@@ -505,9 +583,9 @@ export function LandingPage() {
 
       <footer className="border-t border-[#dcecef] bg-[#edf7f8] py-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 text-sm text-[#567178] sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 ЕНА ГРУПП</p>
+          <p>© 2026 Разумная изба</p>
           <a href="/privacy">Политика конфиденциальности</a>
-          <p>ИНН: 0000000000 · ОГРН: 0000000000000</p>
+          <p>{CONTACT_PHONE_DISPLAY}</p>
         </div>
       </footer>
     </div>

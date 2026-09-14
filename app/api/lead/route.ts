@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: "Некорректные данные" }, { status: 400 });
   }
 
-  console.log("[lead] Заглушка отправки в Битрикс24", {
+  console.log("[lead] Новая заявка Разумной избы", {
     service,
     receivedAt: new Date().toISOString(),
   });

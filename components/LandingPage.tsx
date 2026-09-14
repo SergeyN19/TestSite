@@ -2,120 +2,121 @@
 
 import { FormEvent, useMemo, useState } from "react";
 
-type RepairType = "Косметический" | "Капитальный" | "Дизайнерский" | "Только пол и потолок";
+type FunctionOption = "Управление шторами" | "Отопление" | "Ворота" | "Освещение" | "Климат" | "Безопасность";
+type ScenarioPack = "Базовый" | "Стандарт" | "Расширенный";
 
-type ExtraOption = "Натяжные потолки" | "Замена пола" | "Электрика" | "Санузел" | "Кухня";
+const BASE_RATE_PER_M2 = { min: 2500, max: 4200 };
 
-const REPAIR_RATES: Record<RepairType, { min: number; max: number }> = {
-  "Косметический": { min: 6000, max: 9000 },
-  "Капитальный": { min: 12000, max: 18000 },
-  "Дизайнерский": { min: 20000, max: 30000 },
-  "Только пол и потолок": { min: 3500, max: 5000 },
+const FUNCTION_RATES: Record<FunctionOption, number> = {
+  "Управление шторами": 550,
+  "Отопление": 700,
+  "Ворота": 650,
+  "Освещение": 500,
+  "Климат": 750,
+  "Безопасность": 900,
 };
 
-const OPTION_RATES: Record<ExtraOption, number> = {
-  "Натяжные потолки": 800,
-  "Замена пола": 1200,
-  "Электрика": 1500,
-  "Санузел": 2000,
-  "Кухня": 1800,
+const SCENARIO_RATES: Record<ScenarioPack, { count: number; min: number; max: number }> = {
+  "Базовый": { count: 3, min: 18000, max: 28000 },
+  "Стандарт": { count: 7, min: 35000, max: 52000 },
+  "Расширенный": { count: 12, min: 58000, max: 88000 },
 };
 
 const proofItems = [
-  { icon: "🛡️", title: "10 лет гарантии", text: "В договоре. С перечнем работ." },
-  { icon: "🏠", title: "400+ объектов", text: "Портфолио с фото до/после." },
-  { icon: "📈", title: "97% возвращаются", text: "По данным Отзовика." },
-  { icon: "📋", title: "Смета до начала работ", text: "Фиксируем. Без доплат сверх." },
+  { title: "10 лет гарантии", text: "В договоре. С перечнем работ." },
+  { title: "400+ объектов", text: "Портфолио с фото до/после." },
+  { title: "97% возвращаются", text: "По данным Отзовика." },
+  { title: "Смета до начала работ", text: "Фиксируем. Без доплат сверх." },
 ];
 
 const serviceItems = [
-  { title: "Пол и потолок за 1 день", text: "Точный расчёт и закрытие работ в течение дня." },
-  { title: "Натяжные потолки за 3 часа", text: "Чистый монтаж без пыли и долгих простоев." },
-  { title: "Ремонт кухни под ключ", text: "От демонтажа до финальной установки техники." },
-  { title: "Ремонт ванной и санузла", text: "Гидроизоляция, плитка, сантехника с гарантией." },
-  { title: "Косметический ремонт", text: "Быстрое обновление квартиры без перепланировки." },
-  { title: "Капитальный ремонт", text: "Полная замена инженерии и отделки по этапам." },
+  { title: "Проектирование умного дома", text: "Подбор оборудования и логики управления под ваш объект." },
+  { title: "Монтаж и пусконаладка", text: "Устанавливаем систему и запускаем все контуры без лишних подрядчиков." },
+  { title: "Интеграция под ключ", text: "Объединяем отопление, свет, ворота и безопасность в одном интерфейсе." },
+  { title: "Автоматизация освещения", text: "Сцены, расписания и датчики присутствия для экономии и комфорта." },
+  { title: "Климат и отопление", text: "Автоподдержка температуры по зонам и времени суток." },
+  { title: "Сервис и поддержка", text: "Обновления, диагностика и сопровождение после запуска." },
 ];
 
 const processItems = [
   {
-    title: "Замерщик приезжает",
-    text: "Бесплатно, в удобное время. 1 день.",
+    title: "Обследование объекта",
+    text: "Собираем требования и формируем карту зон автоматизации.",
   },
   {
-    title: "Смета за 24 часа",
-    text: "Фиксированная, по позициям.",
+    title: "Смета и проект",
+    text: "Показываем состав системы и финализируем бюджет.",
   },
   {
-    title: "Ремонт по этапам",
-    text: "Вы платите за принятый этап.",
+    title: "Монтаж и настройка",
+    text: "Подключаем оборудование и создаём сценарии управления.",
   },
   {
-    title: "Сдача и гарантия",
-    text: "Уборка + акт + 10 лет гарантии.",
+    title: "Сдача и поддержка",
+    text: "Передаём инструкции и остаёмся на связи после запуска.",
   },
 ];
 
 const faqItems = [
   {
-    question: "Почему смета может вырасти?",
+    question: "Можно ли внедрять систему поэтапно?",
     answer:
-      "Только если вы меняете объём работ после согласования или вскрываются скрытые дефекты, которые нельзя было увидеть до демонтажа. Все изменения оформляем допсметой до начала нового этапа.",
+      "Да. Проект можно разделить на этапы: сначала критичные функции, затем расширение по сценариям и зонам.",
   },
   {
-    question: "Есть ли скрытые доплаты за вывоз мусора и подъём?",
+    question: "Работает ли всё без интернета?",
     answer:
-      "Нет. В смету заранее вносим вывоз мусора, подъём материалов и расходники. Отдельных платежей после старта работ не добавляем без вашего согласования.",
+      "Базовые функции работают локально. Интернет нужен для удалённого доступа и части облачных интеграций.",
   },
   {
-    question: "Можно ли платить по этапам?",
+    question: "Можно ли подключить существующее оборудование?",
     answer:
-      "Да. Оплата разбивается на этапы: демонтаж, черновые работы, чистовая отделка и сдача. Переход к следующему этапу только после приёмки предыдущего.",
+      "Да, при совместимости протоколов и оборудования. Проверяем это до старта проекта.",
   },
   {
-    question: "Что если бригада затянет сроки?",
+    question: "Сколько времени занимает запуск?",
     answer:
-      "Сроки фиксируем в договоре и календарном плане. При отклонениях заранее уведомляем и пересогласовываем график, чтобы вы понимали причину и новые даты.",
+      "Срок зависит от площади и состава функций. После обследования фиксируем календарный план и этапы.",
   },
   {
-    question: "Гарантия на работы — где прописана?",
+    question: "Есть ли гарантия и сервис?",
     answer:
-      "Гарантия 10 лет прописывается в договоре и акте сдачи с перечнем выполненных работ. Документы передаём в день финальной приёмки.",
+      "Да. В договоре фиксируются гарантия на работы и регламент сервисного сопровождения.",
   },
 ];
 
 const numberFormatter = new Intl.NumberFormat("ru-RU");
 
 export function LandingPage() {
-  const [repairType, setRepairType] = useState<RepairType>("Косметический");
-  const [area, setArea] = useState(45);
-  const [options, setOptions] = useState<ExtraOption[]>([]);
+  const [area, setArea] = useState(120);
+  const [functions, setFunctions] = useState<FunctionOption[]>(["Освещение", "Отопление"]);
+  const [scenarioPack, setScenarioPack] = useState<ScenarioPack>("Стандарт");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [service, setService] = useState<RepairType | "Другое">("Косметический");
+  const [service, setService] = useState("Умный дом");
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const calculation = useMemo(() => {
-    const base = REPAIR_RATES[repairType];
-    const extraRate = options.reduce((sum, option) => sum + OPTION_RATES[option], 0);
-
-    const minPerM2 = base.min + extraRate;
-    const maxPerM2 = base.max + extraRate;
+    const functionsRate = functions.reduce((sum, option) => sum + FUNCTION_RATES[option], 0);
+    const scenarios = SCENARIO_RATES[scenarioPack];
+    const minPerM2 = BASE_RATE_PER_M2.min + functionsRate;
+    const maxPerM2 = BASE_RATE_PER_M2.max + functionsRate;
 
     return {
       minPerM2,
       maxPerM2,
-      minTotal: minPerM2 * area,
-      maxTotal: maxPerM2 * area,
+      scenariosCount: scenarios.count,
+      minTotal: minPerM2 * area + scenarios.min,
+      maxTotal: maxPerM2 * area + scenarios.max,
     };
-  }, [area, options, repairType]);
+  }, [area, functions, scenarioPack]);
 
-  const toggleOption = (option: ExtraOption) => {
-    setOptions((prev) =>
+  const toggleFunction = (option: FunctionOption) => {
+    setFunctions((prev) =>
       prev.includes(option) ? prev.filter((currentOption) => currentOption !== option) : [...prev, option],
     );
   };
@@ -125,7 +126,7 @@ export function LandingPage() {
   };
 
   const handleTransferToForm = () => {
-    setService(repairType);
+    setService("Умный дом");
     scrollToId("lead-form");
   };
 
@@ -165,7 +166,7 @@ export function LandingPage() {
       setSubmitMessage("Спасибо! Перезвоним в течение 15 минут");
       setName("");
       setPhone("");
-      setService("Косметический");
+      setService("Умный дом");
     } catch {
       setSubmitError("Не удалось отправить заявку. Попробуйте ещё раз.");
     } finally {
@@ -175,12 +176,11 @@ export function LandingPage() {
 
   return (
     <div className="bg-transparent text-[#0d2026]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#061217]/80 text-white backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-[#dcecef] bg-white text-[#0d2026] backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <a href="https://ena-group.ru/" className="flex items-center gap-3" target="_blank" rel="noreferrer">
-            {/* TODO: Заменить текстовый логотип на официальный логотип из ena-group.ru */}
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#06A5B8] via-[#18bfd0] to-[#0b7b8f] text-sm font-black text-white shadow-[0_18px_40px_rgba(6,165,184,0.35)]">
-              Е
+            <div className="flex h-11 items-center justify-center border border-[#dcecef] bg-white px-3 text-sm font-black text-[#0d2026]">
+              ЕНА
             </div>
             <span className="text-sm font-extrabold uppercase tracking-wide sm:text-base">ЕНА ГРУПП</span>
           </a>
@@ -198,19 +198,19 @@ export function LandingPage() {
       <main>
         <section className="relative overflow-hidden bg-[#041014]">
           <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-full">
-            <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-[#06A5B8]/25 blur-3xl" />
-            <div className="absolute right-[10%] top-24 h-52 w-52 rounded-full bg-[#41d9e4]/20 blur-3xl" />
+            <div className="absolute left-[8%] top-10 h-40 w-40 bg-[#06A5B8]/25 blur-3xl" />
+            <div className="absolute right-[10%] top-24 h-52 w-52 bg-[#41d9e4]/20 blur-3xl" />
           </div>
           <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-8 px-4 pb-16 pt-10 md:grid-cols-2 md:items-center md:py-24">
             <div className="text-white">
-              <span className="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
-                Современный ремонт с гарантией
+              <span className="inline-flex border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#8fe8f0] backdrop-blur">
+                Автоматизация квартир и домов
               </span>
               <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
-              Ремонт квартир в Москве и МО. Пол и потолок — за 1 день.
+                Умный дом в Москве и МО. Проект, монтаж и запуск под ключ.
               </h1>
               <p className="mt-4 max-w-xl text-base text-[#d6eef1] sm:text-lg">
-              Выезд замерщика бесплатно. Фиксированная смета до начала работ. Гарантия 10 лет.
+                Подберём функции под ваш объект и сразу рассчитаем ориентир по бюджету.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <button type="button" className="cta-btn" onClick={() => scrollToId("calculator")}>
@@ -218,40 +218,39 @@ export function LandingPage() {
                 </button>
                 <a
                   href="tel:84952294422"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                  className="inline-flex items-center justify-center border border-white/15 bg-white/10 px-5 py-3 text-base font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.18)] transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                 >
                   Позвонить сейчас
                 </a>
               </div>
               <div className="mt-8 grid gap-3 sm:max-w-xl sm:grid-cols-3">
                 {proofItems.slice(0, 3).map((item) => (
-                  <div key={item.title} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                    <p className="text-lg">{item.icon}</p>
-                    <p className="mt-2 text-sm font-semibold">{item.title}</p>
+                  <div key={item.title} className="border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
+                    <p className="text-sm font-semibold">{item.title}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div className="dark-card min-h-[320px] p-4">
-              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] rounded-[24px] border-white/15 overflow-hidden">
+              <div aria-hidden="true" className="photo-placeholder relative min-h-[288px] border-white/15 overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.24),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_55%)]" />
                 <div className="relative z-10 grid w-full gap-3">
-                  <div className="ml-auto w-[58%] rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Смета</p>
-                    <p className="mt-2 text-lg font-bold">за 24 часа</p>
+                  <div className="ml-auto w-[58%] border border-white/20 bg-white/10 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Проект</p>
+                    <p className="mt-2 text-lg font-bold">под ваш объект</p>
                   </div>
-                  <div className="w-[65%] rounded-2xl border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
-                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Гарантия</p>
-                    <p className="mt-2 text-lg font-bold">10 лет</p>
+                  <div className="w-[65%] border border-white/20 bg-[#041014]/25 px-4 py-3 text-left backdrop-blur">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сценарии</p>
+                    <p className="mt-2 text-lg font-bold">по вашему ритму жизни</p>
                   </div>
                   <div className="mt-6 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Чистый монтаж</p>
-                      <p className="mt-2 text-sm font-semibold">Аккуратно и без пыли</p>
+                    <div className="border border-white/15 bg-[#041014]/20 p-4 text-left backdrop-blur">
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/70">Интеграция</p>
+                      <p className="mt-2 text-sm font-semibold">Единое управление функциями</p>
                     </div>
-                    <div className="rounded-2xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
+                    <div className="border border-white/15 bg-white/10 p-4 text-left backdrop-blur">
                       <p className="text-xs uppercase tracking-[0.2em] text-white/70">Сроки</p>
-                      <p className="mt-2 text-sm font-semibold">Поэтапно и прозрачно</p>
+                      <p className="mt-2 text-sm font-semibold">План и этапы до старта</p>
                     </div>
                   </div>
                 </div>
@@ -265,33 +264,15 @@ export function LandingPage() {
             <div className="dark-card p-6 sm:p-8">
               <h2 className="text-3xl font-extrabold sm:text-4xl">Калькулятор стоимости</h2>
               <p className="mt-3 max-w-2xl text-sm text-[#c3e6ea] sm:text-base">
-                Соберите предварительную смету в современном калькуляторе и сразу получите понятный диапазон цены.
+                Расчёт по площади помещений, выбранным функциям и количеству сценариев.
               </p>
               <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Тип ремонта</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {(Object.keys(REPAIR_RATES) as RepairType[]).map((type) => (
-                      <button
-                        type="button"
-                        key={type}
-                        className={`rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
-                          repairType === type
-                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
-                            : "border-white/10 bg-white/5 hover:bg-white/10"
-                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
-                        onClick={() => setRepairType(type)}
-                      >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
-
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Площадь: {area} м²</p>
+                <div className="border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-6">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 1. Площадь помещений: {area} м²</p>
                   <input
                     type="range"
                     min={20}
-                    max={200}
+                    max={400}
                     value={area}
                     onChange={(e) => setArea(Number(e.target.value))}
                     className="mt-3 w-full accent-[#06A5B8]"
@@ -299,24 +280,43 @@ export function LandingPage() {
                   <input
                     type="number"
                     min={20}
-                    max={200}
+                    max={400}
                     value={area}
-                    onChange={(e) => setArea(Math.min(200, Math.max(20, Number(e.target.value) || 20)))}
-                    className="mt-3 w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                    onChange={(e) => setArea(Math.min(400, Math.max(20, Number(e.target.value) || 20)))}
+                    className="mt-3 w-28 border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
                   />
 
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Дополнительные опции</p>
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 2. Функции</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {(Object.keys(OPTION_RATES) as ExtraOption[]).map((option) => (
-                      <label key={option} className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
+                    {(Object.keys(FUNCTION_RATES) as FunctionOption[]).map((option) => (
+                      <label key={option} className="flex cursor-pointer items-center gap-2 border border-white/10 bg-white/5 p-3 text-sm transition hover:bg-white/10">
                         <input
                           type="checkbox"
-                          checked={options.includes(option)}
-                          onChange={() => toggleOption(option)}
+                          checked={functions.includes(option)}
+                          onChange={() => toggleFunction(option)}
                           className="size-4 accent-[#06A5B8]"
                         />
                         {option}
                       </label>
+                    ))}
+                  </div>
+
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fe8f0]">Шаг 3. Сценарии</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                    {(Object.keys(SCENARIO_RATES) as ScenarioPack[]).map((pack) => (
+                      <button
+                        type="button"
+                        key={pack}
+                        className={`border px-3 py-3 text-left text-sm font-semibold transition ${
+                          scenarioPack === pack
+                            ? "border-[#51dceb] bg-gradient-to-br from-[#06A5B8] to-[#0c7b8d] text-white shadow-[0_16px_30px_rgba(6,165,184,0.24)]"
+                            : "border-white/10 bg-white/5 hover:bg-white/10"
+                        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]`}
+                        onClick={() => setScenarioPack(pack)}
+                      >
+                        <p>{pack}</p>
+                        <p className="mt-1 text-xs font-medium text-white/80">{SCENARIO_RATES[pack].count} сценариев</p>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -329,8 +329,9 @@ export function LandingPage() {
                   <p className="mt-3 text-sm text-[#32535b]">
                     {numberFormatter.format(calculation.minPerM2)}–{numberFormatter.format(calculation.maxPerM2)} ₽/м² · {area} м²
                   </p>
-                  <div className="mt-6 rounded-2xl border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
-                    Точный расчёт подготовим после замера и закрепим его в смете до старта работ.
+                  <p className="mt-2 text-sm text-[#32535b]">Сценарии: {calculation.scenariosCount}</p>
+                  <div className="mt-6 border border-[#06A5B8]/15 bg-[#06A5B8]/10 p-4 text-sm text-[#1d4f58]">
+                    Точный расчёт закрепим в коммерческом предложении после обследования объекта.
                   </div>
                   <button type="button" className="cta-btn mt-6" onClick={handleTransferToForm}>
                     Получить точную смету
@@ -346,8 +347,7 @@ export function LandingPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {proofItems.map((item) => (
               <article key={item.title} className="glass-card p-5">
-                <p className="text-2xl">{item.icon}</p>
-                <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
+                <h3 className="text-xl font-bold">{item.title}</h3>
                 <p className="mt-1 text-sm text-[#446269]">{item.text}</p>
               </article>
             ))}
@@ -358,17 +358,17 @@ export function LandingPage() {
           <div className="mx-auto w-full max-w-6xl px-4">
             <div className="dark-card p-6 sm:p-8">
               <h2 className="text-3xl font-extrabold sm:text-4xl">Услуги</h2>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {serviceItems.map((item) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                  <h3 className="text-xl font-bold">{item.title}</h3>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {serviceItems.map((item) => (
+                  <article key={item.title} className="border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                    <h3 className="text-xl font-bold">{item.title}</h3>
                     <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
-                    Узнать цену
-                  </button>
-                </article>
-              ))}
-            </div>
+                    <button type="button" className="cta-btn mt-4" onClick={() => scrollToId("calculator")}>
+                      Узнать цену
+                    </button>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -382,8 +382,9 @@ export function LandingPage() {
                   <div className="photo-placeholder min-h-[120px] text-sm">До</div>
                   <div className="photo-placeholder min-h-[120px] text-sm">После</div>
                 </div>
-                {/* TODO: Заменить заглушечные параметры кейса на реальные данные проекта */}
-                <p className="mt-3 text-sm text-[#446269]">Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽</p>
+                <p className="mt-3 text-sm text-[#446269]">
+                  Площадь: {42 + caseIndex} м² · Срок: {18 + caseIndex} дней · Бюджет: {2.2 + caseIndex / 10} млн ₽
+                </p>
               </article>
             ))}
           </div>
@@ -396,16 +397,16 @@ export function LandingPage() {
           <div className="mx-auto w-full max-w-6xl px-4">
             <div className="dark-card p-6 sm:p-8">
               <h2 className="text-3xl font-extrabold sm:text-4xl">Как проходит работа</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {processItems.map((item, index) => (
-                  <article key={item.title} className="rounded-[24px] border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                {processItems.map((item, index) => (
+                  <article key={item.title} className="border border-white/10 bg-white/5 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                     <p className="text-2xl font-black text-[#66e3ef]">{index + 1}</p>
-                  <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
+                    <h3 className="mt-2 text-xl font-bold">{item.title}</h3>
                     <p className="mt-2 text-sm text-[#c3e6ea]">{item.text}</p>
-                  <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
-                </article>
-              ))}
-            </div>
+                    <div className="photo-placeholder mt-4 min-h-[120px] text-sm">Фото этапа</div>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -427,7 +428,11 @@ export function LandingPage() {
                     {item.question}
                     <span className="text-[#06A5B8]">{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen ? <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">{item.answer}</p> : null}
+                  {isOpen ? (
+                    <p id={`faq-answer-${index}`} className="border-t border-[#d5ebee] px-4 py-4 text-sm text-[#446269] sm:px-5">
+                      {item.answer}
+                    </p>
+                  ) : null}
                 </article>
               );
             })}
@@ -437,45 +442,44 @@ export function LandingPage() {
         <section id="lead-form" className="py-14 text-[#eff9fb]">
           <div className="mx-auto w-full max-w-6xl px-4">
             <div className="dark-card p-6 sm:p-8">
-              <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашей квартире</h2>
-              <form onSubmit={handleSubmit} className="mt-6 grid gap-3 rounded-[24px] border border-white/10 bg-white/5 p-5 sm:max-w-xl sm:p-6">
-              <label className="text-sm">
-                Имя
-                <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </label>
-              <label className="text-sm">
-                Телефон
-                <input
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  placeholder="+79991234567"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </label>
-              <label className="text-sm">
-                Что нужно отремонтировать
-                <select
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
-                  value={service}
-                  onChange={(e) => setService(e.target.value as RepairType | "Другое")}
-                >
-                  <option>Косметический</option>
-                  <option>Капитальный</option>
-                  <option>Дизайнерский</option>
-                  <option>Только пол и потолок</option>
-                  <option>Другое</option>
-                </select>
-              </label>
-              <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
-                {isSubmitting ? "Отправка..." : "Получить смету"}
-              </button>
-              {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
-              {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
-            </form>
+              <h2 className="text-3xl font-extrabold sm:text-4xl">Получите смету по вашему объекту</h2>
+              <form onSubmit={handleSubmit} className="mt-6 grid gap-3 border border-white/10 bg-white/5 p-5 sm:max-w-xl sm:p-6">
+                <label className="text-sm">
+                  Имя
+                  <input
+                    className="mt-1 w-full border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+                <label className="text-sm">
+                  Телефон
+                  <input
+                    className="mt-1 w-full border border-white/10 bg-white/5 px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                    placeholder="+79991234567"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </label>
+                <label className="text-sm">
+                  Что нужно автоматизировать
+                  <select
+                    className="mt-1 w-full border border-white/10 bg-[#0d2328] px-3 py-2 text-base text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8fe8f0] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08181d]"
+                    value={service}
+                    onChange={(e) => setService(e.target.value)}
+                  >
+                    <option>Умный дом</option>
+                    <option>Квартира</option>
+                    <option>Частный дом</option>
+                    <option>Коммерческий объект</option>
+                  </select>
+                </label>
+                <button type="submit" disabled={isSubmitting} className="cta-btn mt-2 disabled:cursor-not-allowed disabled:opacity-70">
+                  {isSubmitting ? "Отправка..." : "Получить смету"}
+                </button>
+                {submitError ? <p role="alert" aria-live="assertive" className="text-sm text-[#ff9f9f]">{submitError}</p> : null}
+                {submitMessage ? <p role="status" aria-live="polite" className="text-sm text-[#9ef5b3]">{submitMessage}</p> : null}
+              </form>
             </div>
           </div>
         </section>
